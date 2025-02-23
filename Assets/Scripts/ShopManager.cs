@@ -1,17 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using TMPro;
 
-public class Coins : MonoBehaviour
+public class ShopManager : MonoBehaviour
 {
+    public static ShopManager instance;
+
     [SerializeField] int startingCoins = 100;
     [SerializeField] int currentCoins;
     [SerializeField] TextMeshProUGUI text;
+
     public int ActualCoins { get { return currentCoins; } }
 
-    private void Start()
+    void Awake()
+    {
+        instance = this;
+    }
+
+    void Start()
     {
         currentCoins = startingCoins;
         UpdateGold();
@@ -22,6 +29,7 @@ public class Coins : MonoBehaviour
         currentCoins += Mathf.Abs(amount);
         UpdateGold();
     }
+
     public void WithDraw(int amount)
     {
         currentCoins -= Mathf.Abs(amount);
@@ -29,19 +37,13 @@ public class Coins : MonoBehaviour
 
         if (currentCoins < 0)
         {
-            ReloadScene();
+            // maybe add additional ui logic or something
+            LevelLoader.instance.ReloadScene();
         }
     }
 
-    void UpdateGold()
+    void UpdateGold() // maybe do this as action and put ui somewhere else on ui manager
     {
         text.text = "Gold: " + currentCoins.ToString();
     }
-
-    void ReloadScene()
-    {
-        Scene currentScene = SceneManager.GetActiveScene();
-        SceneManager.LoadScene(currentScene.buildIndex);
-    }
-
 }

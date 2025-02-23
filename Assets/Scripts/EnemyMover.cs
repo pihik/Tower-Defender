@@ -17,9 +17,9 @@ public class EnemyMover : MonoBehaviour
     }
     private void Awake()
     {
-        enemy = FindObjectOfType<Enemy>();
-        pathFinder = FindObjectOfType<PathFinding>();
-        gridManager = FindObjectOfType<GridManager>();
+        enemy = GetComponent<Enemy>();
+        pathFinder = PathFinding.instance;
+        gridManager = GridManager.instance;
     }
 
     void RecalculatePath(bool resetPath)

@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class PathFinding : MonoBehaviour
 {
+    public static PathFinding instance;
+
     [SerializeField] Vector2Int startCoordinates;
     public Vector2Int StartCoordinates { get { return startCoordinates; } }
 
-
-
     [SerializeField] Vector2Int endCoordinates;
     public Vector2Int EndCoordinates { get { return endCoordinates; } }
-
-
 
     Node startNode;
     Node endNode;
@@ -25,9 +23,11 @@ public class PathFinding : MonoBehaviour
     GridManager gridManager;
     Dictionary<Vector2Int, Node> grid = new Dictionary<Vector2Int, Node>();
 
-    private void Awake()
+    void Awake()
     {
-        gridManager = FindObjectOfType<GridManager>();
+        instance = this;
+
+        gridManager = GridManager.instance;
         if(gridManager != null)
         {
             grid = gridManager.Grid;
@@ -78,6 +78,7 @@ public class PathFinding : MonoBehaviour
             }
         }
     }
+
     void BreadFirstSearch(Vector2Int coordinates)
     {
         startNode.isWalkable = true;
@@ -103,6 +104,7 @@ public class PathFinding : MonoBehaviour
         }
 
     }
+
     List<Node> BuildPath()
     {
         List<Node> path = new List<Node>();
@@ -122,6 +124,7 @@ public class PathFinding : MonoBehaviour
 
         return path;
     }
+
     public bool WillBlockPath(Vector2Int coordinates)
     {
         if(grid.ContainsKey(coordinates))

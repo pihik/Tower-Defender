@@ -2,97 +2,95 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Tower))]
+[RequireComponent(typeof(SphereCollider))]
 public class TargetLocator : MonoBehaviour
 {
     [SerializeField] Transform weapon;
     [SerializeField] float maxDistanceToShoot = 15;
-    //EnemyMover enemy;
 
-    [SerializeField] int numberOfEnemies;
-    [SerializeField] Transform ammunition;
+    SphereCollider myCollider;
+    ParticleSystem projectilesVFX;
+    ParticleSystem.EmissionModule emissionModule;
 
+    List<GameObject> overlapsingEnemies = new List<GameObject>();
 
-    [SerializeField] bool inDistance = false;
-
-    // Start is called before the first frame update
     void Start()
     {
+        projectilesVFX = GetComponentInChildren<ParticleSystem>();
+        myCollider = GetComponent<SphereCollider>();
 
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        //EnemyCounter();
-        //Aiming();
-        //Shoot();
-        FindAimShoot();
-    }/*
-    void EnemyCounter()
-    {
-        //enemy = FindObjectOfType<EnemyMover>();
-        numberOfEnemies = GameObject.FindGameObjectsWithTag("Enemy").Length; //CountingEnemies
-    }
-    
-    void Shoot()
-    {
-        if (numberOfEnemies > 0)
+        if (!projectilesVFX || !myCollider)
         {
-            var ammunitionEmision = ammunition.GetComponent<ParticleSystem>().emission;
-            ammunitionEmision.enabled = true;
-        }
-        else if (numberOfEnemies <= 0)
-        {
-            var ammunitionEmision = ammunition.GetComponent<ParticleSystem>().emission;
-            ammunitionEmision.enabled = false;
-        }
-    }
-    
-
-    void Aiming()
-    {
-        if (numberOfEnemies > 0)
-        {
-            weapon.LookAt(enemy.transform.position);
-        }
-        else
-        {
+            Debug.LogError("[TargetLocator::Start] Something went wrong on: " + name);
             return;
         }
-    }*/
-    
-    void FindAimShoot()
+
+        emissionModule = projectilesVFX.emission;
+        emissionModule.enabled = false;
+    }
+
+    void Update()
     {
-        numberOfEnemies = GameObject.FindGameObjectsWithTag("Enemy").Length;
-        EnemyMover[] enemies = FindObjectsOfType<EnemyMover>();
-        
-        foreach(EnemyMover enemy in enemies)
+        if (overlapsingEnemies.Count > 0)
+        {
+            Shoot();
+            return;
+        }
+
+        emissionModule.enabled = false; // stop shooting
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        int collisionLayerIndex = other.gameObject.layer;
+        Debug.Log("trigger active on: " + name + " triggered object is: " + other.name);
+
+        if ((InGameHelper.instance.GetEnemyLayer() & 1 << collisionLayerIndex) == 1 << collisionLayerIndex)
+        {
+            overlapsingEnemies.Add(other.gameObject);
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        int collisionLayerIndex = other.gameObject.layer;
+
+        if ((InGameHelper.instance.GetEnemyLayer() & 1 << collisionLayerIndex) == 1 << collisionLayerIndex)
+        {
+            if (overlapsingEnemies.Contains(other.gameObject))
+            {
+                overlapsingEnemies.Remove(other.gameObject);
+            }
+        }
+    }
+
+    void Aim()
+    {
+        transform.LookAt(ClossestEnemy().transform);
+    }
+
+    void Shoot()
+    {
+        Aim();
+        emissionModule.enabled = true;
+    }
+
+    GameObject ClossestEnemy()
+    {
+        GameObject closestEnemy = null;
+        float closestDistance = maxDistanceToShoot;
+
+        foreach (var enemy in overlapsingEnemies)
         {
             float distance = Vector3.Distance(transform.position, enemy.transform.position);
-
-            if (numberOfEnemies > 0 && distance < maxDistanceToShoot)
+            if (distance < closestDistance)
             {
-                inDistance = true;
-                weapon.LookAt(enemy.transform.position);
-                var ammunitionEmmision = ammunition.GetComponent<ParticleSystem>().emission;
-                ammunitionEmmision.enabled = true;
-                return;
+                closestDistance = distance;
+                closestEnemy = enemy;
             }
-            else if (distance > maxDistanceToShoot)
-            {
-                inDistance = false;
-                var ammunitionEmmision = ammunition.GetComponent<ParticleSystem>().emission;
-                ammunitionEmmision.enabled = false;
-                
-            }
-            
-        }
-        if(numberOfEnemies <= 0)
-        {
-            inDistance = false;
-            var ammunitionEmmision = ammunition.GetComponent<ParticleSystem>().emission;
-            ammunitionEmmision.enabled = false;
         }
 
+        return closestEnemy;
     }
 }

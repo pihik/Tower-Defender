@@ -14,7 +14,7 @@ public class CoordinateLabeler : MonoBehaviour
 
     void Awake()
     {
-        gridManager = FindObjectOfType<GridManager>();
+        gridManager = GridManager.instance;
         textTMP = GetComponent<TextMeshPro>();
         DisplayCoordinates();
     }

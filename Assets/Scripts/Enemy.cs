@@ -10,19 +10,20 @@ public class Enemy : MonoBehaviour
     [SerializeField] int goldReward = 50;
     [SerializeField] int goldPenalty = 50;
 
-    Coins coins;
+    ShopManager shopManager;
 
-    // Start is called before the first frame update
     void Start()
     {
-        coins = FindObjectOfType<Coins>();
+        shopManager = ShopManager.instance;
     }
+
     public void RewardCoins()
     {
-        coins.Deposit(goldReward);
+        shopManager.Deposit(goldReward);
     }
+
     public void StealGold()
     {
-        coins.WithDraw(goldPenalty);
+        shopManager.WithDraw(goldPenalty);
     }
 }

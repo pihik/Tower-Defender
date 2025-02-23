@@ -7,7 +7,6 @@ public class Tower : MonoBehaviour
     [SerializeField] int towerCost = 50;
     [SerializeField] float buildTime = 3f;
 
-
     void Start()
     {
         StartCoroutine(Build());
@@ -15,16 +14,17 @@ public class Tower : MonoBehaviour
 
     public bool CreateTower(Tower tower, Vector3 position)
     {
-        Coins coins = FindObjectOfType<Coins>();
+        ShopManager shopManager = ShopManager.instance;
 
-        if (coins.ActualCoins >= towerCost)
+        if (shopManager.ActualCoins >= towerCost)
         {
             Instantiate(tower.gameObject, position, Quaternion.identity);
-            coins.WithDraw(towerCost);
+            shopManager.WithDraw(towerCost);
             return true;
         }
         return false;
     }
+
     IEnumerator Build()
     {
         foreach(Transform child in transform)

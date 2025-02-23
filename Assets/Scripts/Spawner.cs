@@ -26,10 +26,6 @@ public class Spawner : MonoBehaviour
         {
             Instantiate(enemy, transform);
             yield return new WaitForSeconds(spawnDelay);
-        }/*
-        else if (spawnedEnemies == 0)
-        {
-            Debug.Log("You Win!");
-        }*/
+        }
     }
 }

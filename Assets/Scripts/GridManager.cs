@@ -4,19 +4,25 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
+    public static GridManager instance;
+
     [SerializeField] Vector2Int gridSize;
 
     [Tooltip("Unity grid size should match UnityEditor snap settings")]
     [SerializeField] int unityGridSize = 10;
-    public int UnityGridSize { get { return unityGridSize; } }
 
     Dictionary<Vector2Int, Node> grid = new Dictionary<Vector2Int, Node>();
-    public Dictionary<Vector2Int, Node> Grid { get { return grid; } }
 
-    private void Awake()
+    public Dictionary<Vector2Int, Node> Grid { get { return grid; } }
+    public int UnityGridSize { get { return unityGridSize; } }
+
+    void Awake()
     {
+        instance = this;
+
         CreateGrid();
     }
+
     public Node GetNode(Vector2Int coordinates)
     {
         if (grid.ContainsKey(coordinates))
