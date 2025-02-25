@@ -2,48 +2,77 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(TargetLocator))]
 public class Tower : MonoBehaviour
 {
-    [SerializeField] int towerCost = 50;
-    [SerializeField] float buildTime = 3f;
+    [SerializeField] DefensiveTowerStats stats;
+
+    TargetLocator targetLocator;
+
+    void Awake()
+    {
+        targetLocator = GetComponent<TargetLocator>();
+
+        if (!targetLocator || !stats)
+        {
+            Debug.LogError("[Tower::Awake] Something went wrong on: " + name);
+        }
+
+    }
 
     void Start()
     {
+        InitializeVariables();
         StartCoroutine(Build());
+    }
+
+    void InitializeVariables()
+    {
+        targetLocator.SetAttackDistance(stats.attackDistance);
+        targetLocator.SetViewRange(stats.viewRange);
     }
 
     public bool CreateTower(Tower tower, Vector3 position)
     {
         ShopManager shopManager = ShopManager.instance;
 
-        if (shopManager.ActualCoins >= towerCost)
+        if (!shopManager || !stats)
         {
+            Debug.LogError("[Tower::CreateTower] ShopManager is missing");
+            return false;
+        }
+
+        if (shopManager.ActualCoins >= stats.cost)
+        {
+            shopManager.WithDraw(stats.cost);
             Instantiate(tower.gameObject, position, Quaternion.identity);
-            shopManager.WithDraw(towerCost);
+
             return true;
         }
+
         return false;
     }
 
     IEnumerator Build()
     {
-        foreach(Transform child in transform)
+        List<Transform> buildOrder = new List<Transform>();
+
+        foreach (Transform child in transform)
         {
+            buildOrder.Add(child);
             child.gameObject.SetActive(false);
-            foreach(Transform grandchild in child)
+
+            foreach (Transform grandchild in child)
             {
+                buildOrder.Add(grandchild);
                 grandchild.gameObject.SetActive(false);
             }
         }
 
-        foreach (Transform child in transform)
+        foreach (Transform part in buildOrder)
         {
-            child.gameObject.SetActive(true);
-            yield return new WaitForSeconds(buildTime);
-            foreach (Transform grandchild in child)
-            {
-                grandchild.gameObject.SetActive(true);
-            }
+            part.gameObject.SetActive(true);
+            yield return new WaitForSeconds(stats.buildTime / buildOrder.Count);
         }
     }
 }

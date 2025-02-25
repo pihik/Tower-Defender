@@ -4,11 +4,13 @@ using UnityEngine;
 
 [RequireComponent(typeof(Tower))]
 [RequireComponent(typeof(SphereCollider))]
+[RequireComponent(typeof(Rigidbody))]
 public class TargetLocator : MonoBehaviour
 {
     [SerializeField] Transform weapon;
-    [SerializeField] float maxDistanceToShoot = 15;
+    float attackDistance = 15;
 
+    Rigidbody myRigidbody;
     SphereCollider myCollider;
     ParticleSystem projectilesVFX;
     ParticleSystem.EmissionModule emissionModule;
@@ -19,15 +21,34 @@ public class TargetLocator : MonoBehaviour
     {
         projectilesVFX = GetComponentInChildren<ParticleSystem>();
         myCollider = GetComponent<SphereCollider>();
+        myRigidbody = GetComponent<Rigidbody>();
 
-        if (!projectilesVFX || !myCollider)
+        if (!projectilesVFX || !myCollider || !myRigidbody)
         {
             Debug.LogError("[TargetLocator::Start] Something went wrong on: " + name);
             return;
         }
 
+        myRigidbody.useGravity = false;
+        myRigidbody.isKinematic = true;
+
         emissionModule = projectilesVFX.emission;
         emissionModule.enabled = false;
+    }
+
+    public void SetAttackDistance(float distance)
+    {
+        attackDistance = distance;
+    }
+
+    public void SetViewRange(float viewRange)
+    {
+        if (!myCollider)
+        {
+            return;
+        }
+
+        myCollider.radius = viewRange;
     }
 
     void Update()
@@ -67,7 +88,14 @@ public class TargetLocator : MonoBehaviour
 
     void Aim()
     {
-        transform.LookAt(ClossestEnemy().transform);
+        GameObject enemy = ClossestEnemy();
+
+        if (!enemy)
+        {
+            return;
+        }
+
+        transform.LookAt(enemy.transform);
     }
 
     void Shoot()
@@ -79,10 +107,17 @@ public class TargetLocator : MonoBehaviour
     GameObject ClossestEnemy()
     {
         GameObject closestEnemy = null;
-        float closestDistance = maxDistanceToShoot;
+        float closestDistance = attackDistance;
 
-        foreach (var enemy in overlapsingEnemies)
+        for (int i = overlapsingEnemies.Count - 1; i >= 0; i--)
         {
+            var enemy = overlapsingEnemies[i];
+            if (!enemy)
+            {
+                overlapsingEnemies.RemoveAt(i);
+                continue;
+            }
+
             float distance = Vector3.Distance(transform.position, enemy.transform.position);
             if (distance < closestDistance)
             {

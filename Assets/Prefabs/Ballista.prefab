@@ -49,8 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f3b5a71a4b34c241a59bf0d812d2bd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  towerCost: 50
-  buildTime: 3
+  stats: {fileID: 11400000, guid: 74154d1ef2c54fc4f90990229bf0270b, type: 2}
 --- !u!114 &8324426540206049848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64,7 +63,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weapon: {fileID: 3144582324300694500}
-  maxDistanceToShoot: 20
 --- !u!135 &210649555962154327
 SphereCollider:
   m_ObjectHideFlags: 0

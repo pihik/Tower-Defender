@@ -1,25 +1,34 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyMover : MonoBehaviour
 {
-    [SerializeField] float movementSpeed = 1f;
+    public Action OnPathFinished;
+
+    float movementSpeed = 1f;
+
     List<Node> path = new List<Node>();
-    Enemy enemy;
+
     PathFinding pathFinder;
     GridManager gridManager;
-
-    private void OnEnable()
+    /********************************************************************** TODO **********************************************************************/
+    void OnEnable()
     {
         StartPosition();
         RecalculatePath(true);
     }
-    private void Awake()
+
+    void Awake()
     {
-        enemy = GetComponent<Enemy>();
         pathFinder = PathFinding.instance;
         gridManager = GridManager.instance;
+
+        if (!pathFinder || !gridManager)
+        {
+            Debug.LogError("[EnemyMover::Awake] Missing components");
+        }
     }
 
     void RecalculatePath(bool resetPath)
@@ -33,21 +42,17 @@ public class EnemyMover : MonoBehaviour
         {
             coordinates = gridManager.GetCoordinatesFromPosition(transform.position);
         }
+
         StopAllCoroutines();
         path.Clear();
         path = pathFinder.GetNewPath(coordinates);
+
         StartCoroutine(PrintWaypointName());
     }
 
     void StartPosition()
     {
         transform.position = gridManager.GetPositionFromCoordinates(pathFinder.StartCoordinates);
-    }
-
-    void FinishPath()
-    {
-        enemy.StealGold();
-        Destroy(gameObject);
     }
 
     IEnumerator PrintWaypointName()
@@ -67,6 +72,12 @@ public class EnemyMover : MonoBehaviour
                 yield return new WaitForEndOfFrame();
             }
         }
-        FinishPath();
+
+        OnPathFinished?.Invoke();
+    }
+
+    public void SetMovementSpeed(float speed)
+    {
+        movementSpeed = speed;
     }
 }
