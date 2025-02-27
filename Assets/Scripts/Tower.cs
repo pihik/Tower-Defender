@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(TargetLocator))]
 public class Tower : MonoBehaviour
 {
-    [SerializeField] DefensiveTowerStats stats;
+    [SerializeField] DefenderStats stats;
 
     TargetLocator targetLocator;
 
@@ -16,20 +16,20 @@ public class Tower : MonoBehaviour
         if (!targetLocator || !stats)
         {
             Debug.LogError("[Tower::Awake] Something went wrong on: " + name);
+            return;
         }
 
     }
 
     void Start()
     {
-        InitializeVariables();
+        InitializeStats();
         StartCoroutine(Build());
     }
 
-    void InitializeVariables()
+    void InitializeStats()
     {
-        targetLocator.SetAttackDistance(stats.attackDistance);
-        targetLocator.SetViewRange(stats.viewRange);
+        targetLocator.SetStats(stats);
     }
 
     public bool CreateTower(Tower tower, Vector3 position)

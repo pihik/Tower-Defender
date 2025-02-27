@@ -97,7 +97,6 @@ GameObject:
   - component: {fileID: 5672325927823913723}
   - component: {fileID: 7918383682228906493}
   - component: {fileID: -4812538947452821506}
-  - component: {fileID: -71083889681178962}
   - component: {fileID: 1061605358}
   m_Layer: 8
   m_Name: Ram
@@ -155,20 +154,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d1a1e3ca7feb5f4d878dba773dc9b5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 1
---- !u!114 &-71083889681178962
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5040643765344069697}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d658e46ae6d396049bf54463be77d0c7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 5
 --- !u!114 &1061605358
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -181,5 +166,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06be9d8c39e67b24191f1598147bfda5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goldReward: 50
-  goldPenalty: 50
+  stats: {fileID: 11400000, guid: c07e98d8d32331d45a2e206de2ef6bd2, type: 2}

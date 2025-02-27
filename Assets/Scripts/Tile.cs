@@ -12,13 +12,19 @@ public class Tile : MonoBehaviour
     PathFinding pathFinder;
     Vector2Int coordinates = new Vector2Int();
 
-    private void Awake()
+    /// <summary>
+    /// TODO 
+    /// - coop with shop
+    /// - blocking tile if tree is there
+    /// </summary>
+
+    void Awake()
     {
         gridManager = GridManager.instance;
         pathFinder = PathFinding.instance;
     }
 
-    private void Start()
+    void Start()
     {
         if(gridManager != null)
         {
@@ -31,7 +37,7 @@ public class Tile : MonoBehaviour
         }
     }
 
-    private void OnMouseDown()
+    void OnMouseDown()
     {
         if (gridManager.GetNode(coordinates).isWalkable && !pathFinder.WillBlockPath(coordinates))
         {

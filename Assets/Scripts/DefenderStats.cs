@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "DefensiveTower", menuName = "ScriptableObjects/DefensiveTower")]
-public class DefensiveTowerStats : ScriptableObject
+public class DefenderStats : ScriptableObject
 {
     public new string name;
     public GameObject prefab;
@@ -12,6 +12,7 @@ public class DefensiveTowerStats : ScriptableObject
     public int attackDistance = 5;
     public int viewRange = 10;
     public int buildTime = 3;
+    public float attackSpeed = 1;
     public int cost = 50;
     public Texture icon;
 }

@@ -7,19 +7,13 @@ public class EnemyMover : MonoBehaviour
 {
     public Action OnPathFinished;
 
-    float movementSpeed = 1f;
-
     List<Node> path = new List<Node>();
 
     PathFinding pathFinder;
     GridManager gridManager;
-    /********************************************************************** TODO **********************************************************************/
-    void OnEnable()
-    {
-        StartPosition();
-        RecalculatePath(true);
-    }
 
+    EnemyStats stats;
+    
     void Awake()
     {
         pathFinder = PathFinding.instance;
@@ -29,6 +23,19 @@ public class EnemyMover : MonoBehaviour
         {
             Debug.LogError("[EnemyMover::Awake] Missing components");
         }
+    }
+
+    void InitializeMySelf()
+    {
+        StartPosition();
+        RecalculatePath(true);
+    }
+
+    public void SetStats(EnemyStats stats)
+    {
+        this.stats = stats;
+
+        InitializeMySelf();
     }
 
     void RecalculatePath(bool resetPath)
@@ -67,17 +74,18 @@ public class EnemyMover : MonoBehaviour
 
             while(movePercentil < 1f)
             {
-                movePercentil += Time.deltaTime * movementSpeed;
+                if (!stats)
+                {
+                    Debug.LogError("[EnemyMover::PrintWaypointName] Missing stats");
+                    yield break;
+                }
+
+                movePercentil += Time.deltaTime * stats.movementSpeed;
                 transform.position = Vector3.Lerp(startPosition, endPosition, movePercentil);
                 yield return new WaitForEndOfFrame();
             }
         }
 
         OnPathFinished?.Invoke();
-    }
-
-    public void SetMovementSpeed(float speed)
-    {
-        movementSpeed = speed;
     }
 }

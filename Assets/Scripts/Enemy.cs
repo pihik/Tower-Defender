@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] EnemyStats enemyStats;
+    [SerializeField] EnemyStats stats;
 
     EnemyMover enemyMover;
     ShopManager shopManager;
@@ -34,29 +34,29 @@ public class Enemy : MonoBehaviour
 
     void InitializeStats()
     {
-        currentHealth = enemyStats.health;
-        enemyMover.SetMovementSpeed(enemyStats.movementSpeed);
+        currentHealth = stats.health;
+        enemyMover.SetStats(stats);
     }
 
     public void RewardCoins()
     {
-        shopManager.Deposit(enemyStats.coinReward);
+        shopManager.Deposit(stats.coinReward);
     }
 
     public void StealGold()
     {
-        shopManager.WithDraw(enemyStats.coinPenalty);
+        shopManager.WithDraw(stats.coinPenalty);
     }
 
-    void OnParticleCollision(GameObject other)
+    public void TakeDamage(int damage)
     {
-        currentHealth--;
+        currentHealth -= damage;
         if (currentHealth <= 0)
         {
             HandleDeath();
         }
     }
-
+    
     void HandleDeath()
     {
         RewardCoins();

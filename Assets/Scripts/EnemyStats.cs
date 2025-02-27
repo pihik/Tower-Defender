@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Enemy", menuName = "ScriptableObjects/DefensiveTower")]
-public class EnemyStats : MonoBehaviour
+[CreateAssetMenu(fileName = "Enemy", menuName = "ScriptableObjects/Attacker")]
+public class EnemyStats : ScriptableObject
 {
     public new string name;
     public GameObject Prefab;

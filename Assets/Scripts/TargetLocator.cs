@@ -8,18 +8,28 @@ using UnityEngine;
 public class TargetLocator : MonoBehaviour
 {
     [SerializeField] Transform weapon;
-    float attackDistance = 15;
 
     Rigidbody myRigidbody;
     SphereCollider myCollider;
+    ProjectileScript projectileScript;
     ParticleSystem projectilesVFX;
     ParticleSystem.EmissionModule emissionModule;
 
     List<GameObject> overlapsingEnemies = new List<GameObject>();
 
-    void Start()
+    DefenderStats stats;
+
+    void Awake()
     {
-        projectilesVFX = GetComponentInChildren<ParticleSystem>();
+        projectileScript = GetComponentInChildren<ProjectileScript>();
+
+        if (!projectileScript)
+        {
+            Debug.LogError("[TargetLocator::Start] ProjectileScript is missing");
+            return;
+        }
+
+        projectilesVFX = projectileScript.GetComponent<ParticleSystem>();
         myCollider = GetComponent<SphereCollider>();
         myRigidbody = GetComponent<Rigidbody>();
 
@@ -36,36 +46,45 @@ public class TargetLocator : MonoBehaviour
         emissionModule.enabled = false;
     }
 
-    public void SetAttackDistance(float distance)
+    void Start()
     {
-        attackDistance = distance;
+        projectileScript.SetDamage(stats.attack);
     }
 
-    public void SetViewRange(float viewRange)
+    public void SetStats(DefenderStats stats)
+    {
+        this.stats = stats;
+
+        InitializeViewRange();
+    }
+
+    void InitializeViewRange()
     {
         if (!myCollider)
         {
             return;
         }
 
-        myCollider.radius = viewRange;
+        myCollider.radius = stats.viewRange;
     }
 
     void Update()
     {
         if (overlapsingEnemies.Count > 0)
         {
-            Shoot();
+            Aim();
             return;
         }
 
-        emissionModule.enabled = false; // stop shooting
+        if (emissionModule.enabled)
+        {
+            emissionModule.enabled = false; // stops shooting
+        }
     }
 
     void OnTriggerEnter(Collider other)
     {
         int collisionLayerIndex = other.gameObject.layer;
-        Debug.Log("trigger active on: " + name + " triggered object is: " + other.name);
 
         if ((InGameHelper.instance.GetEnemyLayer() & 1 << collisionLayerIndex) == 1 << collisionLayerIndex)
         {
@@ -96,18 +115,38 @@ public class TargetLocator : MonoBehaviour
         }
 
         transform.LookAt(enemy.transform);
+
+        if (IsEnemyInRange(enemy))
+        {
+            Shoot();
+        }
     }
 
     void Shoot()
     {
-        Aim();
         emissionModule.enabled = true;
+        emissionModule.rateOverTime = stats.attackSpeed;
+    }
+
+    bool IsEnemyInRange(GameObject enemy)
+    {
+        if (!enemy)
+        {
+            return false;
+        }
+        return Vector3.Distance(transform.position, enemy.transform.position) <= stats.attackDistance;
     }
 
     GameObject ClossestEnemy()
     {
+        if (!stats)
+        {
+            Debug.LogError("[TargetLocator::ClossestEnemy] Stats are missing");
+            return null;
+        }
+
         GameObject closestEnemy = null;
-        float closestDistance = attackDistance;
+        float closestDistance = stats.viewRange;
 
         for (int i = overlapsingEnemies.Count - 1; i >= 0; i--)
         {

@@ -9,17 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 96a12e5b4f49e3248b3e2559ac96f20a, type: 3}
-  m_Name: Balista
+  m_Script: {fileID: 11500000, guid: 4fa5665f58cca594a93a32fbae6d3a47, type: 3}
+  m_Name: Ballista
   m_EditorClassIdentifier: 
-  name: Balista
-  Prefab: {fileID: 3219458064393657486, guid: 8a965e088bae16643aab3d07ccfd5e2e, type: 3}
-  TowerType: 0
-  description: It can shoot projectiles in decent range
-  health: 1
+  name: Ballista
+  prefab: {fileID: 3219458064393657486, guid: 8a965e088bae16643aab3d07ccfd5e2e, type: 3}
+  attackType: 0
+  description: Powerful long-range siege weapon
+  health: 3
   attack: 3
-  attackDistance: 15
-  viewRange: 20
+  attackDistance: 20
+  viewRange: 25
   buildTime: 3
+  attackSpeed: 1
   cost: 50
   icon: {fileID: 0}
