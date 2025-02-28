@@ -4,6 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Tower))]
 [RequireComponent(typeof(SphereCollider))]
+[RequireComponent(typeof(BoxCollider))]
 [RequireComponent(typeof(Rigidbody))]
 public class TargetLocator : MonoBehaviour
 {
@@ -48,14 +49,20 @@ public class TargetLocator : MonoBehaviour
 
     void Start()
     {
-        projectileScript.SetDamage(stats.attack);
     }
 
     public void SetStats(DefenderStats stats)
     {
+        if (!stats)
+        {
+            Debug.LogError("[TargetLocatio::SetStats] stats are null");
+            return;
+        }
+
         this.stats = stats;
 
         InitializeViewRange();
+        projectileScript.SetDamage(stats.attack);
     }
 
     void InitializeViewRange()

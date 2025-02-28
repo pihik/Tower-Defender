@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4fa5665f58cca594a93a32fbae6d3a47, type: 3}
-  m_Name: Ballista
+  m_Name: Archer
   m_EditorClassIdentifier: 
-  name: Ballista
-  prefab: {fileID: 3219458064393657486, guid: 8a965e088bae16643aab3d07ccfd5e2e, type: 3}
+  name: Archer
+  prefab: {fileID: 4237196021823301628, guid: 6b4ea8234ebb8434aaa9df67c0b2b49f, type: 3}
   attackType: 0
-  description: Powerful long-range siege weapon
-  health: 3
-  attack: 5
-  attackDistance: 30
-  viewRange: 35
+  description: Great unit for close range fight
+  health: 1
+  attack: 1
+  attackDistance: 10
+  viewRange: 15
   buildTime: 3
-  attackSpeed: 0.5
-  cost: 100
+  attackSpeed: 2
+  cost: 50
   icon: {fileID: 0}

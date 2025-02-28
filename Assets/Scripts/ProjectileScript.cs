@@ -8,10 +8,8 @@ public class ProjectileScript : MonoBehaviour
 
     void OnParticleCollision(GameObject other)
     {
-        Debug.Log("particle hit");
         if (other.TryGetComponent<Enemy>(out Enemy enemyComponent))
         {
-            Debug.Log("enemy is taking damage");
             enemyComponent.TakeDamage(damage);
         }
     }

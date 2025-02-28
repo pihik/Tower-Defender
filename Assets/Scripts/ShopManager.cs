@@ -11,6 +11,8 @@ public class ShopManager : MonoBehaviour
     [SerializeField] int currentCoins;
     [SerializeField] TextMeshProUGUI text;
 
+    [SerializeField] Tower SelectedTower;
+
     public int ActualCoins { get { return currentCoins; } }
 
     void Awake()
@@ -45,5 +47,15 @@ public class ShopManager : MonoBehaviour
     void UpdateGold() // maybe do this as action and put ui somewhere else on ui manager
     {
         text.text = "Gold: " + currentCoins.ToString();
+    }
+
+    public void SelectTower(Tower tower)
+    {
+        SelectedTower = tower;
+    }
+
+    public Tower GetSelectedTower()
+    {
+        return SelectedTower;
     }
 }
