@@ -23,6 +23,8 @@ public class IconsHandler : MonoBehaviour
 
             icon.onClick.AddListener(() => OnIconClick(icon));
         }
+
+        icons[0].onClick.Invoke();
     }
 
     void OnIconClick(Button icon)

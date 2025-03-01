@@ -4,6 +4,10 @@ public class InGameHelper : MonoBehaviour
 {
     public static InGameHelper instance;
 
+    [Header("ObjectPool Storage")]
+    [SerializeField] Transform defaultStorage;
+    [SerializeField] Transform projectileStorage;
+
     [Header("Layers")]
     [SerializeField] LayerMask playerLayer;
     [SerializeField] LayerMask enemyLayer;
@@ -21,5 +25,15 @@ public class InGameHelper : MonoBehaviour
     public LayerMask GetEnemyLayer()
     {
         return enemyLayer;
+    }
+
+    public Transform GetDefaultStorage()
+    {
+        return defaultStorage;
+    }
+
+    public Transform GetProjectileStorage()
+    {
+        return projectileStorage;
     }
 }

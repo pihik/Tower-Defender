@@ -3,33 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(TargetLocator))]
+[RequireComponent(typeof(BoxCollider))]
 public class Tower : MonoBehaviour
 {
     [SerializeField] DefenderStats stats;
 
-    TargetLocator targetLocator;
+    ProjectileScript projectileScript;
 
     void Awake()
     {
-        targetLocator = GetComponent<TargetLocator>();
+        projectileScript = GetComponentInChildren<ProjectileScript>();
 
-        if (!targetLocator || !stats)
+        if (!stats || !projectileScript)
         {
             Debug.LogError("[Tower::Awake] Something went wrong on: " + name);
             return;
         }
-
     }
 
     void Start()
     {
-        InitializeStats();
         StartCoroutine(Build());
-    }
-
-    void InitializeStats()
-    {
-        targetLocator.SetStats(stats);
     }
 
     public bool CreateTower(Tower tower, Vector3 position)
@@ -74,5 +68,10 @@ public class Tower : MonoBehaviour
             part.gameObject.SetActive(true);
             yield return new WaitForSeconds(stats.buildTime / buildOrder.Count);
         }
+    }
+
+    public DefenderStats GetStats()
+    {
+        return stats;
     }
 }

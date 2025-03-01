@@ -1,27 +1,30 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 [RequireComponent(typeof(Tower))]
 [RequireComponent(typeof(SphereCollider))]
-[RequireComponent(typeof(BoxCollider))]
 [RequireComponent(typeof(Rigidbody))]
 public class TargetLocator : MonoBehaviour
 {
     [SerializeField] Transform weapon;
 
+    DefenderStats stats;
     Rigidbody myRigidbody;
     SphereCollider myCollider;
     ProjectileScript projectileScript;
+
     ParticleSystem projectilesVFX;
     ParticleSystem.EmissionModule emissionModule;
 
     List<GameObject> overlapsingEnemies = new List<GameObject>();
 
-    DefenderStats stats;
+    float viewRange = 10f;
 
     void Awake()
     {
+        InitializeTowerStats();
         projectileScript = GetComponentInChildren<ProjectileScript>();
 
         if (!projectileScript)
@@ -30,9 +33,11 @@ public class TargetLocator : MonoBehaviour
             return;
         }
 
-        projectilesVFX = projectileScript.GetComponent<ParticleSystem>();
+        InitializeProjectileVariables();
+
         myCollider = GetComponent<SphereCollider>();
         myRigidbody = GetComponent<Rigidbody>();
+        projectilesVFX = projectileScript.GetComponent<ParticleSystem>();
 
         if (!projectilesVFX || !myCollider || !myRigidbody)
         {
@@ -45,34 +50,36 @@ public class TargetLocator : MonoBehaviour
 
         emissionModule = projectilesVFX.emission;
         emissionModule.enabled = false;
+
+        myCollider.isTrigger = true;
+        myCollider.includeLayers = InGameHelper.instance.GetEnemyLayer();
+        myCollider.excludeLayers = ~InGameHelper.instance.GetEnemyLayer();
+
+        viewRange = myCollider.radius;
     }
 
-    void Start()
+    void InitializeTowerStats()
     {
-    }
+        Tower tower = GetComponent<Tower>();
 
-    public void SetStats(DefenderStats stats)
-    {
-        if (!stats)
+        if (!tower)
         {
-            Debug.LogError("[TargetLocatio::SetStats] stats are null");
+            Debug.LogError("[TargetLocator::InitializeTowerStats] Tower is missing");
             return;
         }
 
-        this.stats = stats;
-
-        InitializeViewRange();
-        projectileScript.SetDamage(stats.attack);
+        stats = tower.GetStats();
     }
 
-    void InitializeViewRange()
+    void InitializeProjectileVariables()
     {
-        if (!myCollider)
+        if (!projectileScript || !stats)
         {
+            Debug.LogError("[TargetLocator::InitializeProjectileVariables] Something went wrong on: " + name);
             return;
         }
 
-        myCollider.radius = stats.viewRange;
+        projectileScript.InitializeProjectileStats(stats.damage, stats.attackSpeed);
     }
 
     void Update()
@@ -95,7 +102,10 @@ public class TargetLocator : MonoBehaviour
 
         if ((InGameHelper.instance.GetEnemyLayer() & 1 << collisionLayerIndex) == 1 << collisionLayerIndex)
         {
-            overlapsingEnemies.Add(other.gameObject);
+            if (!overlapsingEnemies.Contains(other.gameObject))
+            {
+                overlapsingEnemies.Add(other.gameObject);
+            }
         }
     }
 
@@ -115,49 +125,36 @@ public class TargetLocator : MonoBehaviour
     void Aim()
     {
         GameObject enemy = ClossestEnemy();
+        Debug.Log(name + " aiming to " + ClossestEnemy());
 
         if (!enemy)
         {
             return;
         }
 
-        transform.LookAt(enemy.transform);
+        Vector3 direction = enemy.transform.position - weapon.transform.position;
+        direction.y = 0;
+        weapon.transform.rotation = Quaternion.LookRotation(direction);
 
-        if (IsEnemyInRange(enemy))
-        {
-            Shoot();
-        }
+        Shoot();
     }
 
     void Shoot()
     {
+        //adjust angle or gravity or whatever to hit the enemy
+        Debug.Log(ClossestEnemy().name + " is being shot");
         emissionModule.enabled = true;
-        emissionModule.rateOverTime = stats.attackSpeed;
-    }
-
-    bool IsEnemyInRange(GameObject enemy)
-    {
-        if (!enemy)
-        {
-            return false;
-        }
-        return Vector3.Distance(transform.position, enemy.transform.position) <= stats.attackDistance;
     }
 
     GameObject ClossestEnemy()
     {
-        if (!stats)
-        {
-            Debug.LogError("[TargetLocator::ClossestEnemy] Stats are missing");
-            return null;
-        }
-
         GameObject closestEnemy = null;
-        float closestDistance = stats.viewRange;
+        float closestDistance = float.MaxValue;
 
         for (int i = overlapsingEnemies.Count - 1; i >= 0; i--)
         {
             var enemy = overlapsingEnemies[i];
+
             if (!enemy)
             {
                 overlapsingEnemies.RemoveAt(i);

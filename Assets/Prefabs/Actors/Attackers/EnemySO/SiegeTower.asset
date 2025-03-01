@@ -13,13 +13,11 @@ MonoBehaviour:
   m_Name: SiegeTower
   m_EditorClassIdentifier: 
   name: SiegeTower
-  Prefab: {fileID: 2468481688575277511, guid: 84ce1c840243ff04881d4c809cb8be53, type: 3}
   attackType: 1
   description: Massive structure, that can held many projectiles
-  health: 100
+  health: 200
+  damage: 1
+  attackSpeed: 1
   movementSpeed: 0.2
-  attack: 0
-  attackDistance: 0
-  viewRange: 0
   coinReward: 200
   coinPenalty: 1000

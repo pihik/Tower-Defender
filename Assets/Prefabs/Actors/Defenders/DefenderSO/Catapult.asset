@@ -13,14 +13,11 @@ MonoBehaviour:
   m_Name: Catapult
   m_EditorClassIdentifier: 
   name: Catapult
-  prefab: {fileID: 6828235460362096561, guid: e056dbdbdfa6fa541adcf9467891227a, type: 3}
-  attackType: 0
-  description: Great damage and decent reload time
-  health: 5
-  attack: 20
-  attackDistance: 30
-  viewRange: 35
-  buildTime: 8
-  attackSpeed: 0.4
-  cost: 150
-  icon: {fileID: 0}
+  attackType: 1
+  description: 
+  health: 6
+  damage: 30
+  attackSpeed: 0.2
+  buildTime: 10
+  icon: {fileID: 2800000, guid: c20ee2c862b6b3f408e873b71e22acd9, type: 3}
+  cost: 200

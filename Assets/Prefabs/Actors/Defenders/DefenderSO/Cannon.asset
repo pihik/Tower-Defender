@@ -10,17 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4fa5665f58cca594a93a32fbae6d3a47, type: 3}
-  m_Name: Ballista
+  m_Name: Cannon
   m_EditorClassIdentifier: 
-  name: Ballista
-  prefab: {fileID: 3219458064393657486, guid: 8a965e088bae16643aab3d07ccfd5e2e, type: 3}
-  attackType: 0
-  description: Powerful long-range siege weapon
-  health: 3
-  attack: 5
-  attackDistance: 30
-  viewRange: 35
-  buildTime: 3
-  attackSpeed: 0.5
-  cost: 100
-  icon: {fileID: 0}
+  name: Cannon
+  attackType: 1
+  description: 
+  health: 10
+  damage: 100
+  attackSpeed: 0.1
+  buildTime: 15
+  icon: {fileID: 2800000, guid: 441ae1db51780804798e736daad26f80, type: 3}
+  cost: 300

@@ -11,7 +11,7 @@ public class ShopManager : MonoBehaviour
     [SerializeField] int currentCoins;
     [SerializeField] TextMeshProUGUI text;
 
-    [SerializeField] Tower SelectedTower;
+    Tower SelectedTower;
 
     public int ActualCoins { get { return currentCoins; } }
 
