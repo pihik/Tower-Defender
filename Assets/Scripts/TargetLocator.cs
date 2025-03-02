@@ -10,17 +10,16 @@ public class TargetLocator : MonoBehaviour
 {
     [SerializeField] Transform weapon;
 
-    DefenderStats stats;
+    Tower tower;
     Rigidbody myRigidbody;
     SphereCollider myCollider;
     ProjectileScript projectileScript;
 
-    ParticleSystem projectilesVFX;
-    ParticleSystem.EmissionModule emissionModule;
+    protected DefenderStats stats;
+    protected ParticleSystem projectilesVFX;
+    protected float lastShotTime = 0f;
 
     List<GameObject> overlapsingEnemies = new List<GameObject>();
-
-    float viewRange = 10f;
 
     void Awake()
     {
@@ -48,19 +47,14 @@ public class TargetLocator : MonoBehaviour
         myRigidbody.useGravity = false;
         myRigidbody.isKinematic = true;
 
-        emissionModule = projectilesVFX.emission;
-        emissionModule.enabled = false;
-
         myCollider.isTrigger = true;
         myCollider.includeLayers = InGameHelper.instance.GetEnemyLayer();
         myCollider.excludeLayers = ~InGameHelper.instance.GetEnemyLayer();
-
-        viewRange = myCollider.radius;
     }
 
     void InitializeTowerStats()
     {
-        Tower tower = GetComponent<Tower>();
+        tower = GetComponent<Tower>();
 
         if (!tower)
         {
@@ -84,15 +78,10 @@ public class TargetLocator : MonoBehaviour
 
     void Update()
     {
-        if (overlapsingEnemies.Count > 0)
+        if (overlapsingEnemies.Count > 0 && !tower.IsBuilding())
         {
             Aim();
             return;
-        }
-
-        if (emissionModule.enabled)
-        {
-            emissionModule.enabled = false; // stops shooting
         }
     }
 
@@ -125,7 +114,6 @@ public class TargetLocator : MonoBehaviour
     void Aim()
     {
         GameObject enemy = ClossestEnemy();
-        Debug.Log(name + " aiming to " + ClossestEnemy());
 
         if (!enemy)
         {
@@ -136,14 +124,21 @@ public class TargetLocator : MonoBehaviour
         direction.y = 0;
         weapon.transform.rotation = Quaternion.LookRotation(direction);
 
-        Shoot();
+        if (CanShoot())
+        {
+            Shoot();
+        }
     }
 
-    void Shoot()
+    bool CanShoot()
     {
-        //adjust angle or gravity or whatever to hit the enemy
-        Debug.Log(ClossestEnemy().name + " is being shot");
-        emissionModule.enabled = true;
+        return Time.time >= lastShotTime + stats.attackSpeed;
+    }
+
+    protected virtual void Shoot()
+    {
+        lastShotTime = Time.time;
+        projectilesVFX.Emit(1);
     }
 
     GameObject ClossestEnemy()

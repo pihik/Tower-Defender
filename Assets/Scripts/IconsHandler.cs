@@ -29,7 +29,6 @@ public class IconsHandler : MonoBehaviour
 
     void OnIconClick(Button icon)
     {
-        Debug.Log("[IconsHandler::OnIconClick] Icon clicked: " + icon.name);
         SetButtonNormalColor(icon);
     }
 

@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(TargetLocator))]
 [RequireComponent(typeof(BoxCollider))]
 public class Tower : MonoBehaviour
 {
     [SerializeField] DefenderStats stats;
 
     ProjectileScript projectileScript;
+
+    bool isBuilding = true;
 
     void Awake()
     {
@@ -49,6 +50,7 @@ public class Tower : MonoBehaviour
 
     IEnumerator Build()
     {
+        isBuilding = true;
         List<Transform> buildOrder = new List<Transform>();
 
         foreach (Transform child in transform)
@@ -68,10 +70,17 @@ public class Tower : MonoBehaviour
             part.gameObject.SetActive(true);
             yield return new WaitForSeconds(stats.buildTime / buildOrder.Count);
         }
+
+        isBuilding = false;
     }
 
     public DefenderStats GetStats()
     {
         return stats;
+    }
+
+    public bool IsBuilding()
+    {
+        return isBuilding;
     }
 }

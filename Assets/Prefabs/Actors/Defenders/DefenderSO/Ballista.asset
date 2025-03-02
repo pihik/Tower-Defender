@@ -17,7 +17,7 @@ MonoBehaviour:
   description: 
   health: 3
   damage: 3
-  attackSpeed: 0.4
+  attackSpeed: 1
   buildTime: 3
   icon: {fileID: 2800000, guid: e396e71081cde97439ae38e1f4a0542e, type: 3}
   cost: 80
