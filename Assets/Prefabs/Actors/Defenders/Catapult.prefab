@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1418538838815905141}
   - component: {fileID: 5649558583914165388}
   - component: {fileID: 2124362727760093762}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Catapult_Part2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100,7 +100,7 @@ GameObject:
   - component: {fileID: 7549933036249766258}
   - component: {fileID: 3977673280349503016}
   - component: {fileID: 4995542334433793624}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Catapult_Arm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -188,7 +188,7 @@ GameObject:
   - component: {fileID: 3538934651210402883}
   - component: {fileID: 4240806868843609568}
   - component: {fileID: 3831575561645669086}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Catapult_Part3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5140,7 +5140,7 @@ GameObject:
   - component: {fileID: 983614411848742627}
   - component: {fileID: 3785843277913857707}
   - component: {fileID: 1352484617852589261}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Catapult
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5173,10 +5173,10 @@ SphereCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 695
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -5273,7 +5273,7 @@ GameObject:
   - component: {fileID: 4162981769449366741}
   - component: {fileID: 3580801641454863423}
   - component: {fileID: 7804827915513971376}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Catapult (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5415,6 +5415,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Rock
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 87351b37a2665fb47a3eebd2c24f8557,
+        type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

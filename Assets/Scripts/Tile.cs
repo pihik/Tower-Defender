@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    [SerializeField] bool isPlaceble;
+    [SerializeField] bool isConstuctable = true;
+    [SerializeField] bool pathBlocked;
 
     GridManager gridManager;
     PathFinding pathFinder;
@@ -15,6 +16,8 @@ public class Tile : MonoBehaviour
     /// - coop with shop
     /// - blocking tile if tree is there
     /// </summary>
+
+    int tileLayerMask;
 
     void Awake()
     {
@@ -28,16 +31,36 @@ public class Tile : MonoBehaviour
         {
             coordinates = gridManager.GetCoordinatesFromPosition(transform.position);
 
-            if(!isPlaceble)
+            if(pathBlocked)
             {
                 gridManager.BlockNode(coordinates);
             }
         }
+
+        tileLayerMask = InGameHelper.instance.GetTileLayer();
     }
 
-    void OnMouseDown()
+    void Update()
     {
-        if (IsPointerOverUI())
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, tileLayerMask))
+            {
+                Tile tile = hit.collider.GetComponent<Tile>();
+                if (tile != null)
+                {
+                    tile.OnTileClicked();
+                }
+            }
+        }
+    }
+
+    void OnTileClicked()
+    {
+        if (IsPointerOverUI() || !isConstuctable)
         {
             return;
         }
@@ -60,6 +83,7 @@ public class Tile : MonoBehaviour
             }
         }
     }
+
 
     bool IsPointerOverUI()
     {

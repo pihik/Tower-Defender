@@ -11,6 +11,7 @@ public class InGameHelper : MonoBehaviour
     [Header("Layers")]
     [SerializeField] LayerMask playerLayer;
     [SerializeField] LayerMask enemyLayer;
+    [SerializeField] LayerMask tileLayer;
 
     void Awake()
     {
@@ -25,6 +26,11 @@ public class InGameHelper : MonoBehaviour
     public LayerMask GetEnemyLayer()
     {
         return enemyLayer;
+    }
+
+    public LayerMask GetTileLayer()
+    {
+        return tileLayer;
     }
 
     public Transform GetDefaultStorage()

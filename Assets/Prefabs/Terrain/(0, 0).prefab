@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 859824958162078409}
   - component: {fileID: 7430640943845129465}
   - component: {fileID: 349708493}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -200,7 +200,7 @@ GameObject:
   - component: {fileID: 7573303526986896955}
   - component: {fileID: 3490926928313829539}
   - component: {fileID: 8293078773247291664}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: (0, 0)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -237,8 +237,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPlaceble: 1
-  defensiveTower: {fileID: -1521099216888925775, guid: 8a965e088bae16643aab3d07ccfd5e2e,
-    type: 3}
 --- !u!65 &8293078773247291664
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -271,7 +269,7 @@ GameObject:
   - component: {fileID: 3144725145699146357}
   - component: {fileID: 248649639341908799}
   - component: {fileID: 3627328058121504683}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: GrassMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
