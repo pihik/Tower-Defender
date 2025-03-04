@@ -11,15 +11,19 @@ public class CameraMovement : MonoBehaviour
     [SerializeField] float minZoom = 5f;
     float maxZoom;
 
+    Vector3 startPosition;
+
     void Start()
     {
-        maxZoom = transform.position.y;
+        startPosition = transform.position;
+        maxZoom = startPosition.y;
     }
 
     void Update()
     {
         HandleMovement();
         HandleZoom();
+        CheckForResetPosition();
     }
 
     void HandleMovement()
@@ -43,6 +47,14 @@ public class CameraMovement : MonoBehaviour
             {
                 transform.position = newPosition;
             }
+        }
+    }
+
+    void CheckForResetPosition()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            transform.position = startPosition;
         }
     }
 }

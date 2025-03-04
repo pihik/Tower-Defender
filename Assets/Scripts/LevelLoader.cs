@@ -24,4 +24,25 @@ public class LevelLoader : MonoBehaviour
         Scene currentScene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(currentScene.buildIndex);
     }
+
+    public void LoadNextScene()
+    {
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.buildIndex + 1);
+    }
+
+    public void LoadScene(int levelIndex)
+    {
+        SceneManager.LoadScene(levelIndex);
+    }
+
+    public void LoadMainMenu()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
 }
