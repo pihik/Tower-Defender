@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour
 
     EnemyMover enemyMover;
     ShopManager shopManager;
+    GameManager gameManager;
 
     int currentHealth = 5;
 
@@ -18,6 +19,7 @@ public class Enemy : MonoBehaviour
     {
         enemyMover = GetComponent<EnemyMover>();
         shopManager = ShopManager.instance;
+        gameManager = GameManager.instance;
 
         if (!enemyMover || !shopManager)
         {
@@ -38,12 +40,12 @@ public class Enemy : MonoBehaviour
         enemyMover.SetStats(stats);
     }
 
-    public void RewardCoins()
+    void RewardCoins()
     {
         shopManager.Deposit(stats.coinReward);
     }
 
-    public void StealGold()
+    void StealGold()
     {
         shopManager.WithDraw(stats.coinPenalty);
     }
@@ -53,20 +55,22 @@ public class Enemy : MonoBehaviour
         currentHealth -= damage;
         if (currentHealth <= 0)
         {
+            RewardCoins();
             HandleDeath();
         }
     }
     
     void HandleDeath()
     {
-        RewardCoins();
+        gameManager.OnEnemyDestroyed?.Invoke();
         Destroy(gameObject);
     }
 
     void PathFinished()
     {
         StealGold();
-        Destroy(gameObject);
+        gameManager.OnEnemyPathFinished?.Invoke();
+        HandleDeath();
     }
 
     void OnDisable()

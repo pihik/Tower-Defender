@@ -1,6 +1,80 @@
+using JetBrains.Annotations;
+using System;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    
+    #region Singleton
+    public static GameManager instance;
+
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+    #endregion
+
+    public Action<int> OnHealthChanged;
+    public Action OnEnemyPathFinished;
+    public Action OnEnemyDestroyed;
+    public Action OnWin;
+    public Action OnLost;
+
+    int amountOfEnemies = int.MaxValue;
+    int health = 3;
+
+    void OnEnable()
+    {
+        OnEnemyDestroyed += DecreaseAmountOfEnemies;
+        OnEnemyPathFinished += EnemyFinishedPath;
+    }
+
+    void Start()
+    {
+        OnHealthChanged?.Invoke(health);
+    }
+
+    public void SetNumberOfEnemies(int amount)
+    {
+        if (amount <= 0)
+        {
+            Debug.LogError("[GameManager::SetNumberOfEnemies] Invalid amount");
+            return;
+        }
+
+        amountOfEnemies = amount;
+    }
+
+    void DecreaseAmountOfEnemies()
+    {
+        amountOfEnemies--;
+        if (amountOfEnemies <= 0)
+        {
+            OnWin?.Invoke();
+        }
+    }
+
+    void EnemyFinishedPath()
+    {
+        health--;
+        if (health <= 0)
+        {
+            OnLost?.Invoke();
+            return;
+        }
+
+        OnHealthChanged?.Invoke(health);
+    }
+
+    void OnDisable()
+    {
+        OnEnemyDestroyed -= DecreaseAmountOfEnemies;
+        OnEnemyPathFinished -= EnemyFinishedPath;
+    }
 }

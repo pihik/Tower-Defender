@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 
 public class ShopManager : MonoBehaviour
 {
     public static ShopManager instance;
 
+    public Action<int> OnGoldChanged;
+
     [SerializeField] int startingCoins = 100;
     [SerializeField] int currentCoins;
-    [SerializeField] TextMeshProUGUI text;
 
     Tower SelectedTower;
 
@@ -39,14 +41,13 @@ public class ShopManager : MonoBehaviour
 
         if (currentCoins < 0)
         {
-            // maybe add additional ui logic or something
-            LevelLoader.instance.ReloadScene();
+            GameManager.instance.OnLost?.Invoke();
         }
     }
 
-    void UpdateGold() // maybe do this as action and put ui somewhere else on ui manager
+    void UpdateGold()
     {
-        text.text = "Gold: " + currentCoins.ToString();
+        OnGoldChanged?.Invoke(currentCoins);
     }
 
     public void SelectTower(Tower tower)

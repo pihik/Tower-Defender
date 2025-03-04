@@ -1,12 +1,27 @@
+using TMPro;
 using UnityEngine;
 
 public class UI_Manager : MonoBehaviour
 {
+    [Header("Canvas")]
     [SerializeField] Canvas gameCanvas;
 
+    [Header("UI Events")]
     [SerializeField] GameObject escapeUI;
     [SerializeField] GameObject lostUI;
     [SerializeField] GameObject winUI;
+
+    [Header("Text References")]
+    [SerializeField] TextMeshProUGUI healthText;
+    [SerializeField] TextMeshProUGUI goldText;
+
+    void OnEnable()
+    {
+        GameManager.instance.OnLost += ShowLostUI;
+        GameManager.instance.OnWin += ShowWinUI;
+        GameManager.instance.OnHealthChanged += UpdateHealthText;
+        ShopManager.instance.OnGoldChanged += UpdateGoldText;
+    }
 
     void Start()
     {
@@ -65,5 +80,23 @@ public class UI_Manager : MonoBehaviour
         gameCanvas.gameObject.SetActive(false);
         escapeUI.SetActive(true);
         Time.timeScale = 0;
+    }
+
+    void UpdateHealthText(int health)
+    {
+        healthText.text = "Health: " + health + "/3"; // 3 is always the max health
+    }
+
+    void UpdateGoldText(int gold)
+    {
+        goldText.text = "Gold: " + gold;
+    }
+
+    void OnDisable()
+    {
+        GameManager.instance.OnLost -= ShowLostUI;
+        GameManager.instance.OnWin -= ShowWinUI;
+        GameManager.instance.OnHealthChanged -= UpdateHealthText;
+        ShopManager.instance.OnGoldChanged -= UpdateGoldText;
     }
 }
