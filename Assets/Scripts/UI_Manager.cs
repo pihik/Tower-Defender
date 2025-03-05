@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class UI_Manager : MonoBehaviour
 {
+    public static UI_Manager instance;
+
     [Header("Canvas")]
     [SerializeField] Canvas gameCanvas;
 
@@ -14,6 +16,8 @@ public class UI_Manager : MonoBehaviour
     [Header("Text References")]
     [SerializeField] TextMeshProUGUI healthText;
     [SerializeField] TextMeshProUGUI goldText;
+    [SerializeField] TextMeshProUGUI statisticsText;
+    [SerializeField] TextMeshProUGUI statisticsDescriptionText;
 
     void OnEnable()
     {
@@ -21,6 +25,11 @@ public class UI_Manager : MonoBehaviour
         GameManager.instance.OnWin += ShowWinUI;
         GameManager.instance.OnHealthChanged += UpdateHealthText;
         ShopManager.instance.OnGoldChanged += UpdateGoldText;
+    }
+
+    void Awake()
+    {
+        instance = this;
     }
 
     void Start()
@@ -90,6 +99,17 @@ public class UI_Manager : MonoBehaviour
     void UpdateGoldText(int gold)
     {
         goldText.text = "Gold: " + gold;
+    }
+
+    public void SetStatistics(string name, string description, AttackType type, int health, int damage)
+    {
+        statisticsText.text = "Name: " + name + "\n" +
+                        "Type: " + type + "\n" +
+                        "Health: " + health + "\n" +
+                        "Damage: " + damage;
+
+        statisticsDescriptionText.text = description;
+
     }
 
     void OnDisable()

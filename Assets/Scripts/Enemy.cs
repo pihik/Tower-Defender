@@ -77,4 +77,9 @@ public class Enemy : MonoBehaviour
     {
         enemyMover.OnPathFinished -= PathFinished;
     }
+
+    public EnemyStats GetStats()
+    {
+        return stats;
+    }
 }

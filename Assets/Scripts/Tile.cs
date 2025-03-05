@@ -17,8 +17,6 @@ public class Tile : MonoBehaviour
     /// - blocking tile if tree is there
     /// </summary>
 
-    int tileLayerMask;
-
     void Awake()
     {
         gridManager = GridManager.instance;
@@ -36,29 +34,9 @@ public class Tile : MonoBehaviour
                 gridManager.BlockNode(coordinates);
             }
         }
-
-        tileLayerMask = InGameHelper.instance.GetTileLayer();
     }
 
-    void Update()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, tileLayerMask))
-            {
-                Tile tile = hit.collider.GetComponent<Tile>();
-                if (tile != null)
-                {
-                    tile.OnTileClicked();
-                }
-            }
-        }
-    }
-
-    void OnTileClicked()
+    public void OnTileClicked()
     {
         if (IsPointerOverUI() || !isConstuctable)
         {
