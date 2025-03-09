@@ -29,15 +29,12 @@ public class GameManager : MonoBehaviour
     int amountOfEnemies = int.MaxValue;
     int health = 3;
 
+    int difficulty = 1;
+
     void OnEnable()
     {
         OnEnemyDestroyed += DecreaseAmountOfEnemies;
         OnEnemyPathFinished += EnemyFinishedPath;
-    }
-
-    void Start()
-    {
-        OnHealthChanged?.Invoke(health);
     }
 
     public void SetNumberOfEnemies(int amount)
@@ -54,6 +51,7 @@ public class GameManager : MonoBehaviour
     void DecreaseAmountOfEnemies()
     {
         amountOfEnemies--;
+
         if (amountOfEnemies <= 0)
         {
             OnWin?.Invoke();
@@ -76,5 +74,15 @@ public class GameManager : MonoBehaviour
     {
         OnEnemyDestroyed -= DecreaseAmountOfEnemies;
         OnEnemyPathFinished -= EnemyFinishedPath;
+    }
+
+    public void SetDifficulty(int value)
+    {
+        difficulty = value;
+    }
+
+    public int GetDifficulty()
+    {
+        return difficulty;
     }
 }

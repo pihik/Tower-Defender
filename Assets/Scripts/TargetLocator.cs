@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -8,6 +9,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class TargetLocator : MonoBehaviour
 {
+    public Action OnShoot;
+
     [SerializeField] Transform weapon;
 
     Tower tower;
@@ -137,6 +140,7 @@ public class TargetLocator : MonoBehaviour
 
     protected virtual void Shoot()
     {
+        OnShoot?.Invoke();
         lastShotTime = Time.time;
         projectilesVFX.Emit(1);
     }

@@ -8,16 +8,17 @@ public class UI_Manager : MonoBehaviour
     [Header("Canvas")]
     [SerializeField] Canvas gameCanvas;
 
-    [Header("UI Events")]
-    [SerializeField] GameObject escapeUI;
-    [SerializeField] GameObject lostUI;
-    [SerializeField] GameObject winUI;
+    [Header("Events UI")]
+    [SerializeField] GameObject managerUI;
+    [SerializeField] TextMeshProUGUI coveringText;
 
     [Header("Text References")]
     [SerializeField] TextMeshProUGUI healthText;
     [SerializeField] TextMeshProUGUI goldText;
     [SerializeField] TextMeshProUGUI statisticsText;
     [SerializeField] TextMeshProUGUI statisticsDescriptionText;
+
+    bool isLost;
 
     void OnEnable()
     {
@@ -35,11 +36,10 @@ public class UI_Manager : MonoBehaviour
     void Start()
     {
         Time.timeScale = 1;
+        isLost = false;
 
         gameCanvas.gameObject.SetActive(true);
-        escapeUI.SetActive(false);
-        lostUI.SetActive(false);
-        winUI.SetActive(false);
+        managerUI.SetActive(false);
     }
 
     void Update()
@@ -52,42 +52,45 @@ public class UI_Manager : MonoBehaviour
 
     public void ShowLostUI()
     {
+        isLost = true;
         gameCanvas.gameObject.SetActive(false);
-        escapeUI.SetActive(false);
-        winUI.SetActive(false);
+        
+        managerUI.SetActive(true);
+        coveringText.text = "You have Lost!";
 
-        lostUI.SetActive(true);
         Time.timeScale = 0;
     }
 
     public void ShowWinUI()
     {
-        gameCanvas.gameObject.SetActive(false);
-        escapeUI.SetActive(false);
-        lostUI.SetActive(false);
+        if (isLost)
+        {
+            return;
+        }
 
-        winUI.SetActive(true);
+        gameCanvas.gameObject.SetActive(false);
+        
+        managerUI.SetActive(true);
+        coveringText.text = "You have Won!";
+
         Time.timeScale = 0;
     }
 
     public void EscapeSwitch()
     {
-        if (winUI.activeSelf || lostUI.activeSelf)
+        if (managerUI.activeSelf)
         {
-            return;
-        }
-
-        if (escapeUI.activeSelf)
-        {
-            escapeUI.SetActive(false);
             gameCanvas.gameObject.SetActive(true);
+            managerUI.SetActive(false);
+
             Time.timeScale = 1;
 
             return;
         }
 
         gameCanvas.gameObject.SetActive(false);
-        escapeUI.SetActive(true);
+        managerUI.SetActive(true);
+
         Time.timeScale = 0;
     }
 
@@ -109,7 +112,6 @@ public class UI_Manager : MonoBehaviour
                         "Damage: " + damage;
 
         statisticsDescriptionText.text = description;
-
     }
 
     void OnDisable()

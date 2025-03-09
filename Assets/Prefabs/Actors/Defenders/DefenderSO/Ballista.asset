@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Ballista
   attackType: 1
-  description: 
+  description: This unit can kill enemies in longe range, but it's weak agains giant
+    war mechines
   health: 3
   damage: 3
-  attackSpeed: 1
+  attackSpeed: 3
   buildTime: 3
   icon: {fileID: 2800000, guid: e396e71081cde97439ae38e1f4a0542e, type: 3}
   cost: 80

@@ -41,6 +41,9 @@ public class Spawner : MonoBehaviour
             }
         }
 
+        OnDifficultyChanged(GameManager.instance.GetDifficulty());
+        SetAmountOfEnemies();
+
         spawnCoroutine = StartCoroutine(EnemySpawn());
     }
 
@@ -53,6 +56,37 @@ public class Spawner : MonoBehaviour
         }
     }
 
+    public void OnDifficultyChanged(int difficulty)
+    {
+        //subscribe to event and also on difficulty change the amounts
+        switch (difficulty)
+        {
+            case 0:
+                spawnDelay = 8f;
+                break;
+            case 1:
+                spawnDelay = 5f;
+                break;
+            case 2:
+                spawnDelay = 3f;
+                break;
+            default:
+                Debug.LogError("[Spawner::OnDifficultyChanged] Invalid difficulty");
+                break;
+        }
+    }
+
+    void SetAmountOfEnemies()
+    {
+        int allUnits = 0;
+
+        foreach (var amount in amounts)
+        {
+            allUnits += amount;
+        }
+
+        GameManager.instance.SetNumberOfEnemies(allUnits);
+    }
     void Spawn()
     {
         Instantiate(enemies[currentIndex], transform);

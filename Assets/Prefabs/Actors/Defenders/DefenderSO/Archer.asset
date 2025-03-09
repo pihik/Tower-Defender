@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Catapult
   attackType: 1
-  description: 
+  description: Cheap unit with small damage, but it can be very efficient against
+    enemies in close range
   health: 1
   damage: 1
   attackSpeed: 0.5

@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Catapult
   attackType: 1
-  description: 
+  description: Catapult is universal unit, it can be used agains small and also large
+    enemies
   health: 6
   damage: 30
   attackSpeed: 4

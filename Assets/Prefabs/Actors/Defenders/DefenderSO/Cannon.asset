@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Cannon
   attackType: 1
-  description: 
+  description: Very usefull unit, it's necessary to have at least one agains giant
+    war machines
   health: 10
   damage: 100
   attackSpeed: 5
