@@ -13,8 +13,9 @@ public class Settings : MonoBehaviour
     void Awake()
     {
         audioSettings = GetComponent<AudioSettings>();
+        gameSettings = GetComponent<GameSettings>();
 
-        if (!applyButton || !audioSettings)
+        if (!applyButton || !audioSettings || !gameSettings)
         {
             Debug.Log("[Settings::Awake] Something went wrong.");
             return;

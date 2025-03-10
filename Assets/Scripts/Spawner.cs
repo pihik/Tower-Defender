@@ -24,6 +24,11 @@ public class Spawner : MonoBehaviour
 
     Coroutine spawnCoroutine;
 
+    void OnEnable()
+    {
+        GameManager.instance.OnDifficultyChanged += OnDifficultyChanged;
+    }
+
     void Start()
     {
         if (enemies.Length == 0)
@@ -58,14 +63,16 @@ public class Spawner : MonoBehaviour
 
     public void OnDifficultyChanged(int difficulty)
     {
-        //subscribe to event and also on difficulty change the amounts
+        Debug.Log("Difficulty changed to: " + difficulty);
         switch (difficulty)
         {
             case 0:
                 spawnDelay = 8f;
+                DevideAmounts(3);
                 break;
             case 1:
                 spawnDelay = 5f;
+                DevideAmounts(2);
                 break;
             case 2:
                 spawnDelay = 3f;
@@ -73,6 +80,19 @@ public class Spawner : MonoBehaviour
             default:
                 Debug.LogError("[Spawner::OnDifficultyChanged] Invalid difficulty");
                 break;
+        }
+    }
+
+    void DevideAmounts(int devider)
+    {
+        if (devider <= 0)
+        {
+            return;
+        }
+
+        for (int i = 0; i < amounts.Count; i++)
+        {
+            amounts[i] = Mathf.Max(1, amounts[i] / devider);
         }
     }
 
@@ -87,6 +107,7 @@ public class Spawner : MonoBehaviour
 
         GameManager.instance.SetNumberOfEnemies(allUnits);
     }
+
     void Spawn()
     {
         Instantiate(enemies[currentIndex], transform);
@@ -107,5 +128,10 @@ public class Spawner : MonoBehaviour
         }
 
         return true;
+    }
+
+    void OnDisable()
+    {
+        GameManager.instance.OnDifficultyChanged -= OnDifficultyChanged;
     }
 }

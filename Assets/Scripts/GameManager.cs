@@ -7,11 +7,15 @@ public class GameManager : MonoBehaviour
     #region Singleton
     public static GameManager instance;
 
+
+    // TODO updating health on widget and update widget only if it's clicked
+
     void Awake()
     {
         if (instance == null)
         {
             instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -20,6 +24,7 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 
+    public Action<int> OnDifficultyChanged;
     public Action<int> OnHealthChanged;
     public Action OnEnemyPathFinished;
     public Action OnEnemyDestroyed;
@@ -78,7 +83,9 @@ public class GameManager : MonoBehaviour
 
     public void SetDifficulty(int value)
     {
+        Debug.Log("Difficulty changed to: " + value);
         difficulty = value;
+        OnDifficultyChanged?.Invoke(difficulty);
     }
 
     public int GetDifficulty()

@@ -60,12 +60,10 @@ public class MouseHandler : MonoBehaviour
             if ((playerLayer & (1 << hit.collider.gameObject.layer)) != 0)
             {
                 Cursor.SetCursor(playerCursor, cursorHotspot, CursorMode.Auto);
-                HandleClickedOnStatsObject(hit.collider.gameObject);
             }
             else if ((enemyLayer & (1 << hit.collider.gameObject.layer)) != 0)
             {
                 Cursor.SetCursor(enemyCursor, cursorHotspot, CursorMode.Auto);
-                HandleClickedOnStatsObject(hit.collider.gameObject);
             }
             else if ((enviromentLayer & (1 << hit.collider.gameObject.layer)) != 0)
             {
@@ -86,6 +84,11 @@ public class MouseHandler : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
+            if (IsPointerOverUI())
+            {
+                return;
+            }
+
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
@@ -98,6 +101,7 @@ public class MouseHandler : MonoBehaviour
                 {
                     if (hit.collider.gameObject.TryGetComponent(out SphereCollider rangeComponent))
                     {
+                        HandleClickedOnStatsObject(hit.collider.gameObject);
                         DrawCircle(hit.collider.gameObject.transform.position, rangeComponent.radius);
                         SetTarget(hit.collider.gameObject);
                         SelectionTogge(true);
@@ -105,6 +109,7 @@ public class MouseHandler : MonoBehaviour
                 }
                 else if ((enemyLayer & (1 << hit.collider.gameObject.layer)) != 0)
                 {
+                    HandleClickedOnStatsObject(hit.collider.gameObject);
                     SetTarget(hit.collider.gameObject);
                     SelectionTogge(true);
                 }
@@ -119,20 +124,35 @@ public class MouseHandler : MonoBehaviour
         }
     }
 
+    bool IsPointerOverUI()
+    {
+        return UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
+    }
+
     void HandleClickedOnStatsObject(GameObject statsObject)
     {
-        DefaultStats stats = null;
-
         if (statsObject.TryGetComponent(out Tower player))
         {
-            stats = player.GetStats();
+            ClearFocused();
+            SetStatistics(player.GetStats());
         }
         else if (statsObject.TryGetComponent(out Enemy enemy))
         {
-            stats = enemy.GetStats();
+            ClearFocused();
+            enemy.SetFocus(true);
+            //stats = enemy.GetStats();
         }
+    }
 
-        SetStatistics(stats);
+    void ClearFocused()
+    {
+        if (target)
+        {
+            if (target.TryGetComponent(out Enemy enemy))
+            {
+                enemy.SetFocus(false);
+            }
+        }
     }
 
     void SetStatistics(DefaultStats stats)
@@ -142,7 +162,7 @@ public class MouseHandler : MonoBehaviour
             return;
         }
 
-        UI_Manager.instance.SetStatistics(stats.name, stats.description, stats.attackType, stats.health, stats.damage);
+        UI_Manager.instance.SetStatistics(stats.name, stats.description, stats.attackType, stats.health.ToString(), stats.damage);
     }
 
     void SelectionTogge(bool activate)

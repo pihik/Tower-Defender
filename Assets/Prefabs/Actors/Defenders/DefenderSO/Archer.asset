@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fa5665f58cca594a93a32fbae6d3a47, type: 3}
   m_Name: Archer
   m_EditorClassIdentifier: 
-  name: Catapult
+  name: Archer
   attackType: 1
   description: Cheap unit with small damage, but it can be very efficient against
     enemies in close range

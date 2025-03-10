@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +8,8 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    Action OnStatsChanged;
+
     [SerializeField] EnemyStats stats;
 
     EnemyMover enemyMover;
@@ -53,6 +56,8 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
+        OnStatsChanged?.Invoke();
+
         if (currentHealth <= 0)
         {
             RewardCoins();
@@ -63,6 +68,7 @@ public class Enemy : MonoBehaviour
     void HandleDeath()
     {
         gameManager.OnEnemyDestroyed?.Invoke();
+        SetFocus(false);
         Destroy(gameObject);
     }
 
@@ -76,6 +82,26 @@ public class Enemy : MonoBehaviour
     void OnDisable()
     {
         enemyMover.OnPathFinished -= PathFinished;
+    }
+
+    public void SetFocus(bool isFocused)
+    {
+        if (isFocused)
+        {
+            OnStatsChanged += UpdateUI;
+            UpdateUI();
+        }
+        else
+        {
+            OnStatsChanged -= UpdateUI;
+            UI_Manager.instance.ClearStatistics();
+        }
+    }
+
+    void UpdateUI()
+    {
+        string healthText = stats.health.ToString() + "/" + currentHealth.ToString();
+        UI_Manager.instance.SetStatistics(stats.name, stats.description, stats.attackType, healthText, stats.damage);
     }
 
     public EnemyStats GetStats()

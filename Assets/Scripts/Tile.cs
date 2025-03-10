@@ -11,12 +11,6 @@ public class Tile : MonoBehaviour
     PathFinding pathFinder;
     Vector2Int coordinates = new Vector2Int();
 
-    /// <summary>
-    /// TODO 
-    /// - coop with shop
-    /// - blocking tile if tree is there
-    /// </summary>
-
     void Awake()
     {
         gridManager = GridManager.instance;
@@ -38,7 +32,7 @@ public class Tile : MonoBehaviour
 
     public void OnTileClicked()
     {
-        if (IsPointerOverUI() || !isConstuctable)
+        if (!isConstuctable)
         {
             return;
         }
@@ -60,11 +54,5 @@ public class Tile : MonoBehaviour
                 pathFinder.NotifyReceivers();
             }
         }
-    }
-
-
-    bool IsPointerOverUI()
-    {
-        return UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
     }
 }

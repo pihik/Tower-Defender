@@ -1,9 +1,12 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class IconsHandler : MonoBehaviour
 {
     Button[] icons;
+
+    [SerializeField] TextMeshProUGUI PopUpWindow;
 
     [SerializeField] Color selectedColor = Color.white;
 
@@ -59,5 +62,15 @@ public class IconsHandler : MonoBehaviour
         icon.colors = colorBlock;
 
         DeselectOthers(icon);
+    }
+
+    public void ShowPopUp(DefenderStats stats)
+    {
+        PopUpWindow.transform.parent.gameObject.SetActive(true);
+
+        string popUpText = $"<b><size=21>Name: {stats.name}</size></b>\n" +
+                           $"<size=18>Cost: {stats.cost}</size>\n";
+
+        PopUpWindow.text = popUpText;
     }
 }

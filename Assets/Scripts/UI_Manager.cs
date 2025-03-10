@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UI_Manager : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class UI_Manager : MonoBehaviour
     [Header("Events UI")]
     [SerializeField] GameObject managerUI;
     [SerializeField] TextMeshProUGUI coveringText;
+    [SerializeField] Button continueButton;
 
     [Header("Text References")]
     [SerializeField] TextMeshProUGUI healthText;
@@ -56,6 +58,7 @@ public class UI_Manager : MonoBehaviour
         gameCanvas.gameObject.SetActive(false);
         
         managerUI.SetActive(true);
+        continueButton.gameObject.SetActive(false);
         coveringText.text = "You have Lost!";
 
         Time.timeScale = 0;
@@ -71,6 +74,7 @@ public class UI_Manager : MonoBehaviour
         gameCanvas.gameObject.SetActive(false);
         
         managerUI.SetActive(true);
+        continueButton.gameObject.SetActive(false);
         coveringText.text = "You have Won!";
 
         Time.timeScale = 0;
@@ -104,7 +108,7 @@ public class UI_Manager : MonoBehaviour
         goldText.text = "Gold: " + gold;
     }
 
-    public void SetStatistics(string name, string description, AttackType type, int health, int damage)
+    public void SetStatistics(string name, string description, AttackType type, string health, int damage)
     {
         statisticsText.text = "Name: " + name + "\n" +
                         "Type: " + type + "\n" +
@@ -112,6 +116,12 @@ public class UI_Manager : MonoBehaviour
                         "Damage: " + damage;
 
         statisticsDescriptionText.text = description;
+    }
+
+    public void ClearStatistics()
+    {
+        statisticsText.text = "";
+        statisticsDescriptionText.text = "";
     }
 
     void OnDisable()
