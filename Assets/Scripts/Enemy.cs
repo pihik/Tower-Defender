@@ -79,11 +79,6 @@ public class Enemy : MonoBehaviour
         HandleDeath();
     }
 
-    void OnDisable()
-    {
-        enemyMover.OnPathFinished -= PathFinished;
-    }
-
     public void SetFocus(bool isFocused)
     {
         if (isFocused)
@@ -107,5 +102,11 @@ public class Enemy : MonoBehaviour
     public EnemyStats GetStats()
     {
         return stats;
+    }
+
+    void OnDisable()
+    {
+        enemyMover.OnPathFinished -= PathFinished;
+        OnStatsChanged -= UpdateUI;
     }
 }

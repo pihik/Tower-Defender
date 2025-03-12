@@ -21,14 +21,17 @@ public class AudioManager : MonoBehaviour
     }
     #endregion
 
-    float masterVolume = 1;
-    float backgroundVolume = 1;
-    float effectVolume = 1;
-    float interactVolume = 1;
+    float masterVolume = 0.5f;
+    float backgroundVolume = 0.5f;
+    float effectVolume = 0.5f;
+    float interactVolume = 0.5f;
 
     AudioSource backgroundSource;
     List<AudioSource> effectSources = new List<AudioSource>();
     List<AudioSource> interactSources = new List<AudioSource>();
+
+    [SerializeField] AudioSource effectSource;
+    [SerializeField] AudioSource interactSource;
 
     public void AddSoundSource(AudioSource audioSource, SoundType soundType)
     {
@@ -59,6 +62,16 @@ public class AudioManager : MonoBehaviour
         {
             audioSource.volume = masterVolume * interactVolume;
         }
+    }
+
+    public void PlayEffectSFX(AudioClip clip)
+    {
+        effectSource.PlayOneShot(clip);
+    }
+
+    public void PlayInteractSFX(AudioClip clip)
+    {
+        interactSource.PlayOneShot(clip);
     }
 
     public void SetMasterVolume(float volume)
