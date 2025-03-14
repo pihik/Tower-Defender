@@ -24,7 +24,7 @@ public class Enemy : MonoBehaviour
         shopManager = ShopManager.instance;
         gameManager = GameManager.instance;
 
-        if (!enemyMover || !shopManager)
+        if (!enemyMover || !shopManager || !gameManager)
         {
             Debug.LogError("[Enemy::Awake] Missing components");
         }

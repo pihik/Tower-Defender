@@ -9126,11 +9126,23 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 1947958364}
+          m_TargetAssemblyTypeName: IconsHandler, Assembly-CSharp
+          m_MethodName: SetPopUpLocationToTarget
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 180289952}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   - eventID: 1
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 2054037224}
+        - m_Target: {fileID: 1499825051}
           m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_MethodName: SetActive
           m_Mode: 6
@@ -47953,11 +47965,23 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 1947958364}
+          m_TargetAssemblyTypeName: IconsHandler, Assembly-CSharp
+          m_MethodName: SetPopUpLocationToTarget
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 860310938}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   - eventID: 1
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 2054037224}
+        - m_Target: {fileID: 1499825051}
           m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_MethodName: SetActive
           m_Mode: 6
@@ -60811,7 +60835,7 @@ RectTransform:
   - {fileID: 268110842}
   - {fileID: 1947958360}
   - {fileID: 30585232}
-  - {fileID: 2054037225}
+  - {fileID: 1499825052}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -61949,11 +61973,23 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 1947958364}
+          m_TargetAssemblyTypeName: IconsHandler, Assembly-CSharp
+          m_MethodName: SetPopUpLocationToTarget
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 1089501840}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   - eventID: 1
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 2054037224}
+        - m_Target: {fileID: 1499825051}
           m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_MethodName: SetActive
           m_Mode: 6
@@ -69741,11 +69777,23 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 1947958364}
+          m_TargetAssemblyTypeName: IconsHandler, Assembly-CSharp
+          m_MethodName: SetPopUpLocationToTarget
+          m_Mode: 2
+          m_Arguments:
+            m_ObjectArgument: {fileID: 1257907039}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   - eventID: 1
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 2054037224}
+        - m_Target: {fileID: 1499825051}
           m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_MethodName: SetActive
           m_Mode: 6
@@ -83447,6 +83495,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isConstuctable: 0
   pathBlocked: 1
+--- !u!1 &1499825051
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1499825052}
+  m_Layer: 5
+  m_Name: PopUpOffset
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1499825052
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1499825051}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2054037225}
+  m_Father: {fileID: 1073040405}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1502095301
 GameObject:
   m_ObjectHideFlags: 0
@@ -107372,7 +107456,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa079073028b5e545b49d845d26b17d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PopUpWindow: {fileID: 1493255495}
+  popUpWindow: {fileID: 1493255495}
   selectedColor: {r: 1, g: 0.5176471, b: 0.8966165, a: 1}
 --- !u!1 &1951528890
 GameObject:
@@ -113391,7 +113475,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2054037225
 RectTransform:
   m_ObjectHideFlags: 0
@@ -113405,11 +113489,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1493255494}
-  m_Father: {fileID: 1073040405}
+  m_Father: {fileID: 1499825052}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1275.1062, y: -900.63605}
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2054037226
@@ -118480,22 +118564,22 @@ PrefabInstance:
     - target: {fileID: 1360698203147804935, guid: 2feec10f41fa926499f5b2f05a69d5da,
         type: 3}
       propertyPath: amounts.Array.size
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1360698203147804935, guid: 2feec10f41fa926499f5b2f05a69d5da,
         type: 3}
       propertyPath: enemies.Array.size
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1360698203147804935, guid: 2feec10f41fa926499f5b2f05a69d5da,
         type: 3}
       propertyPath: 'amounts.Array.data[0]'
-      value: 10
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 1360698203147804935, guid: 2feec10f41fa926499f5b2f05a69d5da,
         type: 3}
       propertyPath: 'amounts.Array.data[1]'
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1360698203147804935, guid: 2feec10f41fa926499f5b2f05a69d5da,
         type: 3}

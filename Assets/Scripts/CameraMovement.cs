@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
@@ -28,10 +27,10 @@ public class CameraMovement : MonoBehaviour
 
     void HandleMovement()
     {
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
+		float horizontal = Input.GetAxisRaw("Horizontal");
+		float vertical = Input.GetAxisRaw("Vertical");
 
-        Vector3 move = new Vector3(horizontal, 0, vertical) * moveSpeed * Time.deltaTime;
+		Vector3 move = new Vector3(horizontal, 0, vertical) * moveSpeed * Time.deltaTime;
         transform.Translate(move, Space.World);
     }
 

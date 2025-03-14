@@ -66,6 +66,7 @@ public class GameManager : MonoBehaviour
     void EnemyFinishedPath()
     {
         health--;
+
         if (health <= 0)
         {
             OnLost?.Invoke();

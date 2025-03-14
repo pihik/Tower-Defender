@@ -63,7 +63,6 @@ public class Spawner : MonoBehaviour
 
     public void OnDifficultyChanged(int difficulty)
     {
-        Debug.Log("Difficulty changed to: " + difficulty);
         switch (difficulty)
         {
             case 0:

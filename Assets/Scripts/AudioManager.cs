@@ -16,8 +16,9 @@ public class AudioManager : MonoBehaviour
         }
         else
         {
-            Destroy(this.gameObject);
-        }
+			enabled = false;
+			return;
+		}
     }
     #endregion
 
@@ -26,11 +27,12 @@ public class AudioManager : MonoBehaviour
     float effectVolume = 0.5f;
     float interactVolume = 0.5f;
 
-    AudioSource backgroundSource;
-    List<AudioSource> effectSources = new List<AudioSource>();
-    List<AudioSource> interactSources = new List<AudioSource>();
+    AudioSource backgroundSource; 
+    HashSet<AudioSource> effectSources = new HashSet<AudioSource>();
+	HashSet<AudioSource> interactSources = new HashSet<AudioSource>();
 
-    [SerializeField] AudioSource effectSource;
+
+	[SerializeField] AudioSource effectSource;
     [SerializeField] AudioSource interactSource;
 
     public void AddSoundSource(AudioSource audioSource, SoundType soundType)
@@ -51,7 +53,10 @@ public class AudioManager : MonoBehaviour
 
     void UpdateVolume()
     {
-        backgroundSource.volume = masterVolume * backgroundVolume;
+        if (backgroundSource)
+        {
+			backgroundSource.volume = masterVolume * backgroundVolume;
+		}
 
         foreach (AudioSource audioSource in effectSources)
         {

@@ -116,7 +116,7 @@ public class TargetLocator : MonoBehaviour
 
     void Aim()
     {
-        GameObject enemy = ClossestEnemy();
+        GameObject enemy = ClosestEnemy();
 
         if (!enemy)
         {
@@ -135,17 +135,17 @@ public class TargetLocator : MonoBehaviour
 
     bool CanShoot()
     {
-        return Time.time >= lastShotTime + stats.attackSpeed;
-    }
+		return Time.time - lastShotTime >= stats.attackSpeed;
+	}
 
-    protected virtual void Shoot()
+	protected virtual void Shoot()
     {
         OnShoot?.Invoke();
         lastShotTime = Time.time;
         projectilesVFX.Emit(1);
     }
 
-    GameObject ClossestEnemy()
+    GameObject ClosestEnemy()
     {
         GameObject closestEnemy = null;
         float closestDistance = float.MaxValue;
@@ -154,7 +154,7 @@ public class TargetLocator : MonoBehaviour
         {
             var enemy = overlapsingEnemies[i];
 
-            if (!enemy)
+            if (!enemy || !enemy.activeInHierarchy)
             {
                 overlapsingEnemies.RemoveAt(i);
                 continue;

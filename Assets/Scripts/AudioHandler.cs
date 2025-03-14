@@ -11,11 +11,6 @@ public class AudioHandler : MonoBehaviour
     virtual protected void Awake()
     {
         audioSource = GetComponent<AudioSource>();
-        if (!audioSource)
-        {
-            Debug.Log("[AudioHandler::Awake] AudioSource not found.");
-            return;
-        }
 
         audioManager = AudioManager.instance;
         if (!audioManager)
@@ -24,28 +19,26 @@ public class AudioHandler : MonoBehaviour
             return;
         }
 
-        if (soundType == SoundType.Background)
-        {
-            audioSource.loop = true;
-            audioSource.playOnAwake = true;
-        }
-        else
-        {
-            audioSource.loop = false;
-            audioSource.playOnAwake = false;
-        }
+		switch (soundType)
+		{
+			case SoundType.Background:
+				audioSource.loop = true;
+				audioSource.playOnAwake = true;
+				break;
+			default:
+				audioSource.loop = false;
+				audioSource.playOnAwake = false;
+				break;
+		}
 
-        audioManager.AddSoundSource(audioSource, soundType);
+		audioManager.AddSoundSource(audioSource, soundType);
         audioSource.volume = audioManager.GetMixedVolume(soundType);
     }
 
     void OnDestroy()
     {
-        if (audioManager && audioSource)
-        {
-            audioManager.RemoveSoundSource(audioSource, soundType);
-        }
-    }
+		audioManager?.RemoveSoundSource(audioSource, soundType);
+	}
 }
 
 public enum SoundType

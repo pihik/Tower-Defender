@@ -16,12 +16,9 @@ public class MouseHandler : MonoBehaviour
     [SerializeField] GameObject selection;
     [SerializeField] LineRenderer lineRenderer;
 
-    int playerLayer;
-    int enemyLayer;
-    int enviromentLayer;
-    int tileLayer;
+	int playerLayer, enemyLayer, enviromentLayer, tileLayer;
 
-    GameObject target;
+	GameObject target;
 
     void Start()
     {
@@ -57,23 +54,25 @@ public class MouseHandler : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
         {
-            if ((playerLayer & (1 << hit.collider.gameObject.layer)) != 0)
-            {
-                Cursor.SetCursor(playerCursor, cursorHotspot, CursorMode.Auto);
-            }
-            else if ((enemyLayer & (1 << hit.collider.gameObject.layer)) != 0)
-            {
-                Cursor.SetCursor(enemyCursor, cursorHotspot, CursorMode.Auto);
-            }
-            else if ((enviromentLayer & (1 << hit.collider.gameObject.layer)) != 0)
-            {
-                Cursor.SetCursor(enviromentCursor, cursorHotspot, CursorMode.Auto);
-            }
-            else
-            {
-                Cursor.SetCursor(mainCursorTexture, cursorHotspot, CursorMode.Auto);
-            }
-        }
+			switch (hit.collider.gameObject.layer)
+			{
+				case var layer when (playerLayer & (1 << layer)) != 0:
+					Cursor.SetCursor(playerCursor, cursorHotspot, CursorMode.Auto);
+					break;
+
+				case var layer when (enemyLayer & (1 << layer)) != 0:
+					Cursor.SetCursor(enemyCursor, cursorHotspot, CursorMode.Auto);
+					break;
+
+				case var layer when (enviromentLayer & (1 << layer)) != 0:
+					Cursor.SetCursor(enviromentCursor, cursorHotspot, CursorMode.Auto);
+					break;
+
+				default:
+					Cursor.SetCursor(mainCursorTexture, cursorHotspot, CursorMode.Auto);
+					break;
+			}
+		}
         else
         {
             Cursor.SetCursor(mainCursorTexture, cursorHotspot, CursorMode.Auto);
@@ -82,45 +81,35 @@ public class MouseHandler : MonoBehaviour
 
     void OnLeftClick()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !IsPointerOverUI())
         {
-            if (IsPointerOverUI())
-            {
-                return;
-            }
-
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
-            SelectionTogge(false);
+            SelectionToggle(false);
             lineRenderer.enabled = false;
 
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
             {
-                if ((playerLayer & (1 << hit.collider.gameObject.layer)) != 0)
-                {
-                    if (hit.collider.gameObject.TryGetComponent(out SphereCollider rangeComponent))
-                    {
-                        HandleClickedOnStatsObject(hit.collider.gameObject);
-                        DrawCircle(hit.collider.gameObject.transform.position, rangeComponent.radius);
-                        SetTarget(hit.collider.gameObject);
-                        SelectionTogge(true);
-                    }
-                }
-                else if ((enemyLayer & (1 << hit.collider.gameObject.layer)) != 0)
-                {
-                    HandleClickedOnStatsObject(hit.collider.gameObject);
-                    SetTarget(hit.collider.gameObject);
-                    SelectionTogge(true);
-                }
-                else if ((tileLayer & (1 << hit.collider.gameObject.layer)) != 0)
-                {
-                    if (hit.collider.gameObject.TryGetComponent(out Tile tile))
-                    {
-                        tile.OnTileClicked();
-                    }
-                }
-            }
+				GameObject clickedObject = hit.collider.gameObject;
+
+				if ((playerLayer & (1 << clickedObject.layer)) != 0)
+				{
+					HandleClickedOnStatsObject(clickedObject);
+					if (clickedObject.TryGetComponent(out SphereCollider rangeComponent))
+					{
+						DrawCircle(clickedObject.transform.position, rangeComponent.radius);
+					}
+				}
+				else if ((enemyLayer & (1 << clickedObject.layer)) != 0)
+				{
+					HandleClickedOnStatsObject(clickedObject);
+				}
+				else if ((tileLayer & (1 << clickedObject.layer)) != 0)
+				{
+					clickedObject.GetComponent<Tile>()?.OnTileClicked();
+				}
+			}
         }
     }
 
@@ -131,29 +120,27 @@ public class MouseHandler : MonoBehaviour
 
     void HandleClickedOnStatsObject(GameObject statsObject)
     {
-        if (statsObject.TryGetComponent(out Tower player))
-        {
-            ClearFocused();
-            SetStatistics(player.GetStats());
-        }
-        else if (statsObject.TryGetComponent(out Enemy enemy))
-        {
-            ClearFocused();
-            enemy.SetFocus(true);
-            //stats = enemy.GetStats();
-        }
-    }
+		if (statsObject.TryGetComponent(out Tower player))
+		{
+			ClearFocused();
+			SetStatistics(player.GetStats());
+			SetTarget(statsObject);
+		}
+		else if (statsObject.TryGetComponent(out Enemy enemy))
+		{
+			ClearFocused();
+			enemy.SetFocus(true);
+			SetTarget(statsObject);
+		}
+	}
 
     void ClearFocused()
     {
-        if (target)
-        {
-            if (target.TryGetComponent(out Enemy enemy))
-            {
-                enemy.SetFocus(false);
-            }
-        }
-    }
+		if (target && target.TryGetComponent(out Enemy enemy))
+		{
+			enemy.SetFocus(false);
+		}
+	}
 
     void SetStatistics(DefaultStats stats)
     {
@@ -165,7 +152,7 @@ public class MouseHandler : MonoBehaviour
         UI_Manager.instance.SetStatistics(stats.name, stats.description, stats.attackType, stats.health.ToString(), stats.damage);
     }
 
-    void SelectionTogge(bool activate)
+    void SelectionToggle(bool activate)
     {
         if (selection.activeSelf && (!activate || !target))
         {
@@ -193,7 +180,8 @@ public class MouseHandler : MonoBehaviour
     void SetTarget(GameObject target)
     {
         this.target = target;
-    }
+		SelectionToggle(true);
+	}
 
     void DrawCircle(Vector3 position, float viewRange)
     {
