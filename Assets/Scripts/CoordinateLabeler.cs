@@ -8,49 +8,45 @@ using TMPro;
 
 public class CoordinateLabeler : MonoBehaviour
 {
-    TextMeshPro textTMP;
-    Vector2Int coordinates = new Vector2Int();
-    GridManager gridManager;
+	TextMeshPro textTMP;
+	Vector2Int coordinates = new Vector2Int();
+	int gridSize = 10;
 
-    void Awake()
-    {
-        gridManager = GridManager.instance;
-        textTMP = GetComponent<TextMeshPro>();
-        DisplayCoordinates();
-    }
+	void Awake()
+	{
+		gridSize = GridManager.instance.UnityGridSize;
 
-    void Update()
-    {
-        if(!Application.isPlaying)
-        {
-            DisplayCoordinates();
-            UpdateTileName();
-        }
-        CoordinatesVisibilitySwitch();
-    }
+		textTMP = GetComponent<TextMeshPro>();
+		DisplayCoordinates();
+	}
 
-    void CoordinatesVisibilitySwitch()
-    {
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            textTMP.enabled = !textTMP.IsActive();
-        }
-    }
+	void Update()
+	{
+		if(!Application.isPlaying)
+		{
+			DisplayCoordinates();
+			UpdateTileName();
+		}
+		CoordinatesVisibilitySwitch();
+	}
 
-    void DisplayCoordinates()
-    {
-        if(gridManager == null) 
-        { 
-            return; 
-        }
+	void CoordinatesVisibilitySwitch()
+	{
+		if (Input.GetKeyDown(KeyCode.L))
+		{
+			textTMP.enabled = !textTMP.IsActive();
+		}
+	}
 
-        coordinates.x = Mathf.RoundToInt(transform.parent.position.x / gridManager.UnityGridSize);
-        coordinates.y = Mathf.RoundToInt(transform.parent.position.z / gridManager.UnityGridSize);
+	void DisplayCoordinates()
+	{
+		coordinates.x = Mathf.RoundToInt(transform.parent.position.x / gridSize);
+		coordinates.y = Mathf.RoundToInt(transform.parent.position.z / gridSize);
 
-        textTMP.text = coordinates.x + "," + coordinates.y;
-    }
-    void UpdateTileName()
-    {
-        transform.parent.name = coordinates.ToString();
-    }
+		textTMP.text = coordinates.x + "," + coordinates.y;
+	}
+	void UpdateTileName()
+	{
+		transform.parent.name = coordinates.ToString();
+	}
 }
