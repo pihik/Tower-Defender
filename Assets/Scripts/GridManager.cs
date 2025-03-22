@@ -9,12 +9,11 @@ public class GridManager : MonoBehaviour
 	[SerializeField] Vector2Int gridSize;
 
 	[Tooltip("Unity grid size should match UnityEditor snap settings")]
-	[SerializeField] int unityGridSize = 10;
+	public static int unityGridSize = 10;
 
 	Dictionary<Vector2Int, Node> grid = new Dictionary<Vector2Int, Node>();
 
 	public Dictionary<Vector2Int, Node> Grid { get { return grid; } }
-	public int UnityGridSize { get { return unityGridSize; } }
 
 	void Awake()
 	{

@@ -5,87 +5,81 @@ using UnityEngine;
 
 public class EnemyMover : MonoBehaviour
 {
-    public Action OnPathFinished;
+	public Action OnPathFinished;
 
-    List<Node> path = new List<Node>();
+	List<Node> path = new List<Node>();
 
-    PathFinding pathFinder;
-    GridManager gridManager;
+	PathFinding pathFinder;
+	GridManager gridManager;
 
-    EnemyStats stats;
-    
-    void Awake()
-    {
-        pathFinder = PathFinding.instance;
-        gridManager = GridManager.instance;
+	EnemyStats stats;
+	
+	void Awake()
+	{
+		pathFinder = PathFinding.instance;
+		gridManager = GridManager.instance;
 
-        if (!pathFinder || !gridManager)
-        {
-            Debug.LogError("[EnemyMover::Awake] Missing components");
-        }
-    }
+		if (!pathFinder || !gridManager)
+		{
+			Debug.LogError("[EnemyMover::Awake] Missing components");
+		}
+	}
 
-    void InitializeMySelf()
-    {
-        StartPosition();
-        RecalculatePath(true);
-    }
+	void InitializeMySelf()
+	{
+		StartPosition();
+		RecalculatePath(true);
+	}
 
-    public void SetStats(EnemyStats stats)
-    {
-        this.stats = stats;
+	public void SetStats(EnemyStats stats)
+	{
+		this.stats = stats;
 
-        InitializeMySelf();
-    }
+		InitializeMySelf();
+	}
 
-    void RecalculatePath(bool resetPath)
-    {
-        Vector2Int coordinates = new Vector2Int();
-        if(resetPath)
-        {
-            coordinates = pathFinder.StartCoordinates;
-        }
-        else
-        {
-            coordinates = gridManager.GetCoordinatesFromPosition(transform.position);
-        }
+	void RecalculatePath(bool resetPath)
+	{
+		Vector2Int coordinates = new Vector2Int();
 
-        StopAllCoroutines();
-        path.Clear();
-        path = pathFinder.GetNewPath(coordinates);
+		coordinates = (resetPath) ? pathFinder.StartCoordinates : gridManager.GetCoordinatesFromPosition(transform.position);
 
-        StartCoroutine(PrintWaypointName());
-    }
+		StopAllCoroutines();
+		path.Clear();
+		path = pathFinder.GetNewPath(coordinates);
 
-    void StartPosition()
-    {
-        transform.position = gridManager.GetPositionFromCoordinates(pathFinder.StartCoordinates);
-    }
+		StartCoroutine(MoveAlongPath());
+	}
 
-    IEnumerator PrintWaypointName()
-    {
-        for(int i = 1; i < path.Count; i++)
-        {
-            Vector3 startPosition = transform.position;
-            Vector3 endPosition = gridManager.GetPositionFromCoordinates(path[i].coordinates);
-            float movePercentil = 0f;
+	void StartPosition()
+	{
+		transform.position = gridManager.GetPositionFromCoordinates(pathFinder.StartCoordinates);
+	}
 
-            transform.LookAt(endPosition);
+	IEnumerator MoveAlongPath()
+	{
+		for(int i = 1; i < path.Count; i++)
+		{
+			Vector3 startPosition = transform.position;
+			Vector3 endPosition = gridManager.GetPositionFromCoordinates(path[i].coordinates);
+			float movePercentil = 0f;
 
-            while(movePercentil < 1f)
-            {
-                if (!stats)
-                {
-                    Debug.LogError("[EnemyMover::PrintWaypointName] Missing stats");
-                    yield break;
-                }
+			transform.LookAt(endPosition);
 
-                movePercentil += Time.deltaTime * stats.movementSpeed;
-                transform.position = Vector3.Lerp(startPosition, endPosition, movePercentil);
-                yield return new WaitForEndOfFrame();
-            }
-        }
+			while(movePercentil < 1f)
+			{
+				if (!stats)
+				{
+					Debug.LogError("[EnemyMover::MoveAlongPath] Missing stats");
+					yield break;
+				}
 
-        OnPathFinished?.Invoke();
-    }
+				movePercentil += Time.deltaTime * stats.movementSpeed;
+				transform.position = Vector3.Lerp(startPosition, endPosition, movePercentil);
+				yield return new WaitForEndOfFrame();
+			}
+		}
+
+		OnPathFinished?.Invoke();
+	}
 }

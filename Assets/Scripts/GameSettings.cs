@@ -4,49 +4,50 @@ using UnityEngine;
 
 public class GameSettings : MonoBehaviour
 {
-    [SerializeField] TMP_Dropdown difficultyDropdown;
+	[SerializeField] TMP_Dropdown difficultyDropdown;
 
-    /// <summary>
-    /// 0 = Easy
-    /// 1 = Normal
-    /// 2 = Hard
-    /// </summary>
+	/// <summary>
+	/// 0 = Easy
+	/// 1 = Normal
+	/// 2 = Hard
+	/// </summary>
 
-    void Awake()
-    {
-        InitializeDropdown();
+	void Awake()
+	{
+		InitializeDropdown();
+	}
 
-        // probably not needed
-        if (difficultyDropdown != null)
-        {
-            difficultyDropdown.onValueChanged.AddListener(OnDifficultyChanged);
-        }
-    }
+	void InitializeDropdown()
+	{
+		List<string> options = new List<string> { "Easy", "Normal", "Hard" };
 
-    void InitializeDropdown()
-    {
-        List<string> options = new List<string> { "Easy", "Normal", "Hard" };
+		difficultyDropdown.ClearOptions();
+		difficultyDropdown.AddOptions(options);
 
-        difficultyDropdown.ClearOptions();
-        difficultyDropdown.AddOptions(options);
+		difficultyDropdown.value = GetDifficulty();
+		difficultyDropdown.RefreshShownValue();
+	}
 
-        difficultyDropdown.value = 1;
-        difficultyDropdown.RefreshShownValue();
-    }
+	public void ShowCurrentDifficulty()
+	{
+		difficultyDropdown.value = GetDifficulty();
+		difficultyDropdown.RefreshShownValue();
+	}
 
-    void OnDifficultyChanged(int value)
-    {
-        //selectedDifficulty = value;
-    }
+	void SetDifficulty(int difficultyLevel)
+	{
+		PlayerPrefs.SetInt("GameDifficulty", difficultyLevel);
+		PlayerPrefs.Save();
+	}
 
-    public void ShowCurrentDifficulty()
-    {
-        difficultyDropdown.value = GameManager.instance.GetDifficulty();
-        difficultyDropdown.RefreshShownValue();
-    }
+	int GetDifficulty()
+	{
+		return PlayerPrefs.GetInt("GameDifficulty", 1);
+	}
 
-    public void Apply()
-    {
-        GameManager.instance.SetDifficulty(difficultyDropdown.value);
-    }
+	public void Apply()
+	{
+		SetDifficulty(difficultyDropdown.value);
+		GameManager.instance.SetDifficulty(difficultyDropdown.value);
+	}
 }

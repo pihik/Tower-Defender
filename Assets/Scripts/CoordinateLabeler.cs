@@ -10,13 +10,15 @@ public class CoordinateLabeler : MonoBehaviour
 {
 	TextMeshPro textTMP;
 	Vector2Int coordinates = new Vector2Int();
-	int gridSize = 10;
+	int gridSize = GridManager.unityGridSize;
 
 	void Awake()
 	{
-		gridSize = GridManager.instance.UnityGridSize;
-
 		textTMP = GetComponent<TextMeshPro>();
+	}
+
+	void Start()
+	{
 		DisplayCoordinates();
 	}
 

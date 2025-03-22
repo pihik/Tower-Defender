@@ -6,57 +6,57 @@ using System;
 
 public class ShopManager : MonoBehaviour
 {
-    public static ShopManager instance;
+	public static ShopManager instance;
 
-    public Action<int> OnGoldChanged;
+	public Action<int> OnGoldChanged;
 
-    [SerializeField] int startingCoins = 100;
-    [SerializeField] int currentCoins;
+	[SerializeField] int startingCoins = 100;
+	[SerializeField] int currentCoins;
 
-    Tower SelectedTower;
+	Tower SelectedTower;
 
-    public int ActualCoins { get { return currentCoins; } }
+	public int ActualCoins { get { return currentCoins; } }
 
-    void Awake()
-    {
-        instance = this;
-    }
+	void Awake()
+	{
+		instance = this;
+	}
 
-    void Start()
-    {
-        currentCoins = startingCoins;
-        UpdateGold();
-    }
+	void Start()
+	{
+		currentCoins = startingCoins;
+		UpdateGold();
+	}
 
-    public void Deposit(int amount)
-    {
-        currentCoins += Mathf.Abs(amount);
-        UpdateGold();
-    }
+	public void Deposit(int amount)
+	{
+		currentCoins += Mathf.Abs(amount);
+		UpdateGold();
+	}
 
-    public void WithDraw(int amount)
-    {
-        currentCoins -= Mathf.Abs(amount);
-        UpdateGold();
+	public void WithDraw(int amount)
+	{
+		currentCoins -= Mathf.Abs(amount);
+		UpdateGold();
 
-        if (currentCoins < 0)
-        {
-            GameManager.instance.OnLost?.Invoke();
-        }
-    }
+		if (currentCoins < 0)
+		{
+			GameManager.instance.OnLost?.Invoke();
+		}
+	}
 
-    void UpdateGold()
-    {
-        OnGoldChanged?.Invoke(currentCoins);
-    }
+	void UpdateGold()
+	{
+		OnGoldChanged?.Invoke(currentCoins);
+	}
 
-    public void SelectTower(Tower tower)
-    {
-        SelectedTower = tower;
-    }
+	public void SelectTower(Tower tower)
+	{
+		SelectedTower = tower;
+	}
 
-    public Tower GetSelectedTower()
-    {
-        return SelectedTower;
-    }
+	public Tower GetSelectedTower()
+	{
+		return SelectedTower;
+	}
 }
