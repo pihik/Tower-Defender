@@ -3,21 +3,21 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class AudioHandler : MonoBehaviour
 {
-    [SerializeField] protected SoundType soundType;
+	[SerializeField] protected SoundType soundType;
 
-    protected AudioSource audioSource;
-    protected AudioManager audioManager;
+	protected AudioSource audioSource;
+	protected AudioManager audioManager;
 
-    virtual protected void Awake()
-    {
-        audioSource = GetComponent<AudioSource>();
+	virtual protected void Awake()
+	{
+		audioSource = GetComponent<AudioSource>();
 
-        audioManager = AudioManager.instance;
-        if (!audioManager)
-        {
-            Debug.Log("[AudioHandler::Awake] AudioManager not found on:" + name);
-            return;
-        }
+		audioManager = AudioManager.instance;
+		if (!audioManager)
+		{
+			Debug.Log("[AudioHandler::Awake] AudioManager not found on:" + name);
+			return;
+		}
 
 		switch (soundType)
 		{
@@ -32,18 +32,18 @@ public class AudioHandler : MonoBehaviour
 		}
 
 		audioManager.AddSoundSource(audioSource, soundType);
-        audioSource.volume = audioManager.GetMixedVolume(soundType);
-    }
+		audioSource.volume = audioManager.GetMixedVolume(soundType);
+	}
 
-    void OnDestroy()
-    {
+	void OnDestroy()
+	{
 		audioManager?.RemoveSoundSource(audioSource, soundType);
 	}
 }
 
 public enum SoundType
 {
-    Background,
-    Effect,
-    Interact
+	Background,
+	Effect,
+	Interact
 }
