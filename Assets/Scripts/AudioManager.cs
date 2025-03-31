@@ -32,7 +32,6 @@ public class AudioManager : MonoBehaviour
 	HashSet<AudioSource> effectSources = new HashSet<AudioSource>();
 	HashSet<AudioSource> interactSources = new HashSet<AudioSource>();
 
-
 	[SerializeField] AudioSource effectSource;
 	[SerializeField] AudioSource interactSource;
 

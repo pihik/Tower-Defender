@@ -7,13 +7,14 @@ public class Settings : MonoBehaviour
 
 	AudioSettings audioSettings;
 	GameSettings gameSettings;
-	//GraphicsSettings graphicsSettings;
+	GraphicsSettings graphicsSettings;
 	//InputSettings inputSettings;
 
 	void Awake()
 	{
 		audioSettings = GetComponent<AudioSettings>();
 		gameSettings = GetComponent<GameSettings>();
+		graphicsSettings = GetComponent<GraphicsSettings>();
 
 		if (!applyButton || !audioSettings || !gameSettings)
 		{
@@ -28,7 +29,7 @@ public class Settings : MonoBehaviour
 	{
 		audioSettings.Apply();
 		gameSettings.Apply();
-		//graphicsSettings.Apply();
+		graphicsSettings.Apply();
 		//inputSettings.Apply();
 	}
 }

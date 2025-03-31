@@ -15,12 +15,10 @@ public class ProjectileScript : MonoBehaviour
 
 	void OnParticleCollision(GameObject other)
 	{
-		if ((InGameHelper.instance.GetEnemyLayer() & (1 << other.layer)) != 0)
+		if ((InGameHelper.instance.GetEnemyLayer() & (1 << other.layer)) != 0 &&
+			other.TryGetComponent(out Enemy enemyComponent))
 		{
-			if (other.TryGetComponent<Enemy>(out Enemy enemyComponent))
-			{
-				enemyComponent.TakeDamage(damage);
-			}
+			enemyComponent.TakeDamage(damage);
 		}
 	}
 
