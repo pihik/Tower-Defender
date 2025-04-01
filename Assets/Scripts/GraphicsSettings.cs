@@ -9,7 +9,7 @@ public class GraphicsSettings : MonoBehaviour
 	[SerializeField] TMP_Dropdown antiAliasingDropdown;
 	[SerializeField] TMP_Dropdown shadowsDropdown;
 
-	void Awake()
+	void Start()
 	{
 		InitializeDropdowns();
 		LoadSettings();
@@ -57,6 +57,8 @@ public class GraphicsSettings : MonoBehaviour
 		vSyncDropdown.value = PlayerPrefs.GetInt("VSync", QualitySettings.vSyncCount);
 		antiAliasingDropdown.value = PlayerPrefs.GetInt("AntiAliasing", Mathf.Clamp(QualitySettings.antiAliasing / 2, 0, 3));
 		shadowsDropdown.value = PlayerPrefs.GetInt("Shadows", (int)QualitySettings.shadows);
+
+		Application.targetFrameRate = (QualitySettings.vSyncCount == 0) ? -1 : 144;
 	}
 
 	void SaveSettings()
@@ -76,5 +78,7 @@ public class GraphicsSettings : MonoBehaviour
 		QualitySettings.vSyncCount = vSyncDropdown.value;
 		QualitySettings.antiAliasing = antiAliasingDropdown.value * 2;
 		QualitySettings.shadows = (ShadowQuality)shadowsDropdown.value;
+
+		Application.targetFrameRate = (QualitySettings.vSyncCount == 0) ? -1 : 144;
 	}
 }

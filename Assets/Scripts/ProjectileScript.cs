@@ -8,6 +8,8 @@ public class ProjectileScript : MonoBehaviour
 	ParticleSystem particleComponent;
 	ParticleSystem.EmissionModule emissionModule;
 
+	bool dealtDamage = false;
+
 	void Awake()
 	{
 		InitializeParticleComponent();
@@ -16,9 +18,10 @@ public class ProjectileScript : MonoBehaviour
 	void OnParticleCollision(GameObject other)
 	{
 		if ((InGameHelper.instance.GetEnemyLayer() & (1 << other.layer)) != 0 &&
-			other.TryGetComponent(out Enemy enemyComponent))
+			other.TryGetComponent(out Enemy enemyComponent) && !dealtDamage)
 		{
 			enemyComponent.TakeDamage(damage);
+			dealtDamage = true;
 		}
 	}
 
@@ -33,6 +36,11 @@ public class ProjectileScript : MonoBehaviour
 	public ParticleSystem GetParticleSystem()
 	{
 		return particleComponent;
+	}
+
+	public void ResetDealtDamage()
+	{
+		dealtDamage = false;
 	}
 
 	void InitializeParticleComponent()

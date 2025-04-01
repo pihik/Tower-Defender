@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class FPSChecker : MonoBehaviour
 {
+	public static FPSChecker instance;
 	TextMeshProUGUI fpsText;
 
 	private string filePath;
@@ -13,12 +14,27 @@ public class FPSChecker : MonoBehaviour
 
 	void Awake()
 	{
-		QualitySettings.vSyncCount = 1;
-		Application.targetFrameRate = 144;
+		if (instance == null)
+		{
+			instance = this;
+		}
+		else
+		{
+			Destroy(gameObject);
+			return;
+		}
+		DontDestroyOnLoad(gameObject);
 	}
 
 	void Start()
 	{
+		fpsText = GetComponentInChildren<TextMeshProUGUI>();
+		if (fpsText == null)
+		{
+			Debug.LogError("[FPSChecker::Start] TextMeshProUGUI not found.");
+			return;
+		}
+
 		filePath = Path.Combine(Application.persistentDataPath, "fps_log.csv");
 
 		if (!File.Exists(filePath))

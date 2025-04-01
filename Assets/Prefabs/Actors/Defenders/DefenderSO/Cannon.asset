@@ -18,7 +18,7 @@ MonoBehaviour:
     war machines
   health: 10
   damage: 100
-  attackSpeed: 5
+  attackSpeed: 6
   buildTime: 15
   icon: {fileID: 2800000, guid: 441ae1db51780804798e736daad26f80, type: 3}
   cost: 300

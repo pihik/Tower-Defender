@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 
 [RequireComponent(typeof(Tower))]
@@ -143,6 +144,7 @@ public class TargetLocator : MonoBehaviour
 		OnShoot?.Invoke();
 		lastShotTime = Time.time;
 		projectilesVFX.Emit(1);
+		projectileScript.ResetDealtDamage();
 	}
 
 	GameObject ClosestEnemy()
