@@ -24,17 +24,17 @@ public class FPSChecker : MonoBehaviour
 			return;
 		}
 		DontDestroyOnLoad(gameObject);
-	}
 
-	void Start()
-	{
+
 		fpsText = GetComponentInChildren<TextMeshProUGUI>();
 		if (fpsText == null)
 		{
 			Debug.LogError("[FPSChecker::Start] TextMeshProUGUI not found.");
-			return;
 		}
+	}
 
+	void Start()
+	{
 		filePath = Path.Combine(Application.persistentDataPath, "fps_log.csv");
 
 		if (!File.Exists(filePath))

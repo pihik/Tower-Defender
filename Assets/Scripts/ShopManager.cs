@@ -10,7 +10,7 @@ public class ShopManager : MonoBehaviour
 
 	public Action<int> OnGoldChanged;
 
-	[SerializeField] int startingCoins = 100;
+	[SerializeField] int startingCoins = 100; // this value can be higher on higher difficulty
 	[SerializeField] int currentCoins;
 
 	Tower SelectedTower;
@@ -24,7 +24,22 @@ public class ShopManager : MonoBehaviour
 
 	void Start()
 	{
-		currentCoins = startingCoins;
+		switch (GameManager.instance.GetDifficulty())
+		{
+			case 0:
+				currentCoins = startingCoins;
+				break;
+			case 1:
+				currentCoins = startingCoins * 2;
+				break;
+			case 2:
+				currentCoins = startingCoins * 3;
+				break;
+			default:
+				currentCoins = startingCoins;
+				break;
+		}
+
 		UpdateGold();
 	}
 

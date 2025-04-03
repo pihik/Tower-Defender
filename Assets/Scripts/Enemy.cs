@@ -16,7 +16,7 @@ public class Enemy : MonoBehaviour
 	ShopManager shopManager;
 	GameManager gameManager;
 
-	int currentHealth = 5;
+	int currentHealth = 5; // this value can be higher on higher difficulty
 
 	void Awake()
 	{
@@ -39,7 +39,22 @@ public class Enemy : MonoBehaviour
 
 	void InitializeStats()
 	{
-		currentHealth = stats.health;
+		switch (gameManager.GetDifficulty())
+		{
+			case 0:
+				currentHealth = stats.health;
+				break;
+			case 1:
+				currentHealth = Mathf.FloorToInt(stats.health * 1.5f);
+				break;
+			case 2:
+				currentHealth = Mathf.FloorToInt(stats.health * 2.0f);
+				break;
+			default:
+				currentHealth = stats.health;
+				break;
+		}
+
 		enemyMover.SetStats(stats);
 	}
 

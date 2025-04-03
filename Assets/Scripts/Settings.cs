@@ -25,6 +25,11 @@ public class Settings : MonoBehaviour
 		applyButton.onClick.AddListener(Apply);
 	}
 
+	void Start()
+	{
+		transform.GetChild(0).gameObject.SetActive(false);
+	}
+
 	public void Apply()
 	{
 		audioSettings.Apply();

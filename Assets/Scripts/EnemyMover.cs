@@ -41,7 +41,6 @@ public class EnemyMover : MonoBehaviour
 	void RecalculatePath(bool resetPath)
 	{
 		Vector2Int coordinates = new Vector2Int();
-
 		coordinates = (resetPath) ? pathFinder.StartCoordinates : gridManager.GetCoordinatesFromPosition(transform.position);
 
 		StopAllCoroutines();

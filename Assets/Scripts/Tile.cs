@@ -41,7 +41,6 @@ public class Tile : MonoBehaviour
 		if (gridManager.GetNode(coordinates).isWalkable && !pathFinder.WillBlockPath(coordinates))
 		{
 			Tower tower = ShopManager.instance.GetSelectedTower();
-
 			if (!tower)
 			{
 				Debug.LogError("[Tile::OnMouseDown] Tower is missing");

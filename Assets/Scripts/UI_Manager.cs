@@ -42,7 +42,7 @@ public class UI_Manager : MonoBehaviour
 
 		gameCanvas.gameObject.SetActive(true);
 		managerUI.SetActive(false);
-		managerUI.transform.parent.GetChild(1).gameObject.SetActive(false);
+		managerUI.transform.parent.GetChild(1).GetChild(0).gameObject.SetActive(false);
 	}
 
 	void Update()
@@ -87,7 +87,7 @@ public class UI_Manager : MonoBehaviour
 		{
 			gameCanvas.gameObject.SetActive(true);
 			managerUI.SetActive(false);
-			managerUI.transform.parent.GetChild(1).gameObject.SetActive(false);
+			managerUI.transform.parent.GetChild(1).GetChild(0).gameObject.SetActive(false);
 
 			Time.timeScale = 1;
 

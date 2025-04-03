@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameSettings : MonoBehaviour
 {
 	[SerializeField] TMP_Dropdown difficultyDropdown;
+	[SerializeField] CustomChecker fpsChecker;
 
 	/// <summary>
 	/// 0 = Easy
@@ -12,9 +13,10 @@ public class GameSettings : MonoBehaviour
 	/// 2 = Hard
 	/// </summary>
 
-	void Awake()
+	void Start()
 	{
 		InitializeDropdown();
+		fpsChecker.InitializeCheckerValue(GetCanShowFPS());
 	}
 
 	void InitializeDropdown()
@@ -45,9 +47,22 @@ public class GameSettings : MonoBehaviour
 		return PlayerPrefs.GetInt("GameDifficulty", 1);
 	}
 
+	public void SaveShowFPS(bool show)
+	{
+		PlayerPrefs.SetInt("ShowFPS", show ? 1 : 0);
+		PlayerPrefs.Save();
+	}
+
+	bool GetCanShowFPS()
+	{
+		return PlayerPrefs.GetInt("ShowFPS", 0) == 1;
+	}
+
 	public void Apply()
 	{
 		SetDifficulty(difficultyDropdown.value);
+		SaveShowFPS(fpsChecker.IsChecked());
 		GameManager.instance.SetDifficulty(difficultyDropdown.value);
+		FPSChecker.instance.TextSwitch(fpsChecker.IsChecked());
 	}
 }

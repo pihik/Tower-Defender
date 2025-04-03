@@ -1,57 +1,67 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class ObjectPool : MonoBehaviour
+public class ObjectPool : MonoBehaviour
 {
-    [SerializeField] GameObject objectPrefab;
-    [SerializeField] int poolSize = 20;
+	[SerializeField] GameObject objectPrefab;
+	[Tooltip ("This amount is set for easy difficulty, it can be more on higher difficulty")]
+	[SerializeField] int poolSize = 20;
+	[SerializeField] int timeBetweenSpawns = 2;
 
-    Queue<GameObject> pool = new Queue<GameObject>();
+	Queue<GameObject> pool = new Queue<GameObject>();
 
-    protected virtual void Start()
-    {
-        for (int i = 0; i < poolSize; i++)
-        {
-            GameObject obj = Instantiate(objectPrefab, GetPoolStorage());
-            AdditionalInstantiation(obj);
-            obj.SetActive(false);
-            pool.Enqueue(obj);
-        }
-    }
+	void Awake()
+	{
+		int diffuculty = GameManager.instance.GetDifficulty() + 1;
+		poolSize = Mathf.Max(1, poolSize * diffuculty);
+	}
 
-    public GameObject GetObjectFromPool()
-    {
-        if (pool.Count > 0)
-        {
-            GameObject obj = pool.Dequeue();
-            AdditionalActivation();
-            obj.SetActive(true);
+	void Start()
+	{
+		for (int i = 0; i < poolSize; i++)
+		{
+			GameObject obj = Instantiate(objectPrefab, GetPoolStorage());
+			obj.SetActive(false);
+			pool.Enqueue(obj);
+		}
+	}
 
-            return obj;
-        }
-        else
-        {
-            GameObject obj = Instantiate(objectPrefab, GetPoolStorage());
-            AdditionalInstantiation(obj);
-            AdditionalActivation();
-            obj.SetActive(true);
+	public GameObject GetObjectFromPool()
+	{
+		if (pool.Count > 0)
+		{
+			GameObject obj = pool.Dequeue();
+			obj.SetActive(true);
 
-            return obj;
-        }
-    }
+			return obj;
+		}
+		else
+		{
+			GameObject obj = Instantiate(objectPrefab, GetPoolStorage());
+			obj.SetActive(true);
 
-    public void ReturnObjectToPool(GameObject obj)
-    {
-        obj.SetActive(false);
-        pool.Enqueue(obj);
-    }
+			return obj;
+		}
+	}
 
-    protected virtual Transform GetPoolStorage()
-    {
-        return InGameHelper.instance.GetDefaultStorage();
-    }
+	public void ReturnObjectToPool(GameObject obj)
+	{
+		obj.SetActive(false);
+		pool.Enqueue(obj);
+	}
 
-    protected virtual void AdditionalInstantiation(GameObject obj) { }
+	Transform GetPoolStorage()
+	{
+		return InGameHelper.instance.GetDefaultStorage();
+	}
 
-    protected virtual void AdditionalActivation() { }
+	public int GetTimeBetweenSpawns()
+	{
+		return timeBetweenSpawns;
+	}
+
+	public int GetPoolSize()
+	{
+		return poolSize;
+	}
 }
