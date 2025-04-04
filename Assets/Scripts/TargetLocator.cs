@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
-using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 
 [RequireComponent(typeof(Tower))]
@@ -18,6 +15,7 @@ public class TargetLocator : MonoBehaviour
 	Rigidbody myRigidbody;
 	SphereCollider myCollider;
 	ProjectileScript projectileScript;
+	GameObject currentTarget = null;
 
 	protected DefenderStats stats;
 	protected ParticleSystem projectilesVFX;
@@ -149,6 +147,11 @@ public class TargetLocator : MonoBehaviour
 
 	GameObject ClosestEnemy()
 	{
+		if (currentTarget != null && overlapsingEnemies.Contains(currentTarget) && currentTarget.activeInHierarchy)
+		{
+			return currentTarget;
+		}
+
 		GameObject closestEnemy = null;
 		float closestDistance = float.MaxValue;
 
@@ -170,6 +173,7 @@ public class TargetLocator : MonoBehaviour
 			}
 		}
 
+		currentTarget = closestEnemy;
 		return closestEnemy;
 	}
 }

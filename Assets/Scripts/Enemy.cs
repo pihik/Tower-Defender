@@ -17,6 +17,7 @@ public class Enemy : MonoBehaviour
 	GameManager gameManager;
 
 	int currentHealth = 5; // this value can be higher on higher difficulty
+	int maxHealth = 5;  // this value can be higher on higher difficulty
 
 	void Awake()
 	{
@@ -55,6 +56,7 @@ public class Enemy : MonoBehaviour
 				break;
 		}
 
+		maxHealth = currentHealth;
 		enemyMover.SetStats(stats);
 	}
 
@@ -110,7 +112,7 @@ public class Enemy : MonoBehaviour
 
 	void UpdateUI()
 	{
-		string healthText = stats.health.ToString() + "/" + currentHealth.ToString();
+		string healthText = maxHealth + "/" + currentHealth.ToString();
 		UI_Manager.instance.SetStatistics(stats.name, stats.description, stats.attackType, healthText, stats.damage);
 	}
 
