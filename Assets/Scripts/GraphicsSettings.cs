@@ -58,13 +58,18 @@ public class GraphicsSettings : MonoBehaviour
 		antiAliasingDropdown.value = PlayerPrefs.GetInt("AntiAliasing", Mathf.Clamp(QualitySettings.antiAliasing / 2, 0, 3));
 		shadowsDropdown.value = PlayerPrefs.GetInt("Shadows", (int)QualitySettings.shadows);
 
-		Application.targetFrameRate = (QualitySettings.vSyncCount == 0) ? -1 : 144;
+		QualitySettings.SetQualityLevel(qualityDropdown.value);
+		QualitySettings.vSyncCount = vSyncDropdown.value;
+		QualitySettings.antiAliasing = antiAliasingDropdown.value * 2;
+		QualitySettings.shadows = (ShadowQuality)shadowsDropdown.value;
+
+		Application.targetFrameRate = (vSyncDropdown.value == 0) ? -1 : 144;
 	}
 
 	void SaveSettings()
 	{
 		PlayerPrefs.SetInt("QualityLevel", qualityDropdown.value);
-		PlayerPrefs.SetInt("VSyncCount", vSyncDropdown.value);
+		PlayerPrefs.SetInt("VSync", vSyncDropdown.value);
 		PlayerPrefs.SetInt("AntiAliasing", antiAliasingDropdown.value);
 		PlayerPrefs.SetInt("Shadows", shadowsDropdown.value);
 		PlayerPrefs.Save();
@@ -79,6 +84,6 @@ public class GraphicsSettings : MonoBehaviour
 		QualitySettings.antiAliasing = antiAliasingDropdown.value * 2;
 		QualitySettings.shadows = (ShadowQuality)shadowsDropdown.value;
 
-		Application.targetFrameRate = (QualitySettings.vSyncCount == 0) ? -1 : 144;
+		Application.targetFrameRate = (vSyncDropdown.value == 0) ? -1 : 144;
 	}
 }
