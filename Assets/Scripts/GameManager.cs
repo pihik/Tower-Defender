@@ -24,7 +24,6 @@ public class GameManager : MonoBehaviour
 	}
 	#endregion
 
-	public Action<int> OnDifficultyChanged;
 	public Action<int> OnHealthChanged;
 	public Action OnEnemyPathFinished;
 	public Action OnEnemyDestroyed;
@@ -85,7 +84,6 @@ public class GameManager : MonoBehaviour
 	public void SetDifficulty(int value)
 	{
 		difficulty = value;
-		OnDifficultyChanged?.Invoke(difficulty);
 	}
 
 	public int GetDifficulty()
